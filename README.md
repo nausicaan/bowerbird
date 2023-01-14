@@ -29,7 +29,7 @@ GOOS=linux GOARCH=amd64 go build -o <build_location>/<program_name> main.go
 Navigate to the folder containing your *composer.json* file and run:
 
 ```bash
-<build_location>/<program_name> <full_plugin_name>:<update_version> <jira_ticket_number>
+<build_location>/<program_name> <flag> <full_plugin_name>:<update_version> <jira_ticket_number>
 ```
 
 ## Examples
@@ -37,19 +37,19 @@ Navigate to the folder containing your *composer.json* file and run:
 ### Premium:
 
 ```bash
-~/Documents/programs/wp-updater bcgov-plugin/gravityforms:2.6.8.4 759
+~/Documents/programs/wp-updater -p bcgov-plugin/gravityforms:2.6.8.4 759
 ```
 
 ### Free:
 
 ```bash
-~/Documents/programs/wp-updater wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
+~/Documents/programs/wp-updater -f wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
 ```
 
 Multiple updates, chain together as many as you like!
 
 ```bash
-~/Documents/programs/wp-updater wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
+~/Documents/programs/wp-updater -f wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
 ```
 
 ## License
