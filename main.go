@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	t "github.com/nausicaan/free/tasks"
+	t "github.com/nausicaan/wp-updater/tasks"
 )
 
 // Launch the program and execute the selected program abilities

@@ -4,7 +4,7 @@ Simplify the process of pulling free updates from [WordPress Packagist](https://
 
 ## Prerequisites
 
-- Login information to download the update package. -- *premium content* --
+- Login information to download the update package. -- ***premium content only*** --
 
 - Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
@@ -37,19 +37,19 @@ Navigate to the folder containing your *composer.json* file and run:
 ### Premium:
 
 ```bash
-~/Documents/programs/updater bcgov-plugin/gravityforms:2.6.8.4 759
+~/Documents/programs/wp-updater bcgov-plugin/gravityforms:2.6.8.4 759
 ```
 
 ### Free:
 
 ```bash
-~/Documents/programs/updater wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
+~/Documents/programs/wp-updater wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
 ```
 
 Multiple updates, chain together as many as you like!
 
 ```bash
-~/Documents/programs/updater wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
+~/Documents/programs/wp-updater wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
 ```
 
 ## License
