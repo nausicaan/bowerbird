@@ -7,13 +7,24 @@ import (
 
 var (
 	plugin, ticket string
-	flag           = os.Args[1]
+	ArgLength      = len(os.Args)
+	Flag           = Verify()
 )
+
+func Verify() string {
+	var f string
+	if ArgLength < 2 {
+		f = "-zzz"
+	} else {
+		f = os.Args[1]
+	}
+	return f
+}
 
 // Switch to the desired branch, pull any changes, and run a composer update
 func prepare() {
 	var branch string
-	if flag == "-f" {
+	if Flag == "-f" {
 		branch = "development"
 	} else {
 		branch = "master"
@@ -30,7 +41,7 @@ func commit() {
 
 // Push to the git repository
 func push() {
-	if flag == "-f" {
+	if Flag == "-f" {
 		exec.Command("git", "push").Run()
 	} else {
 		exec.Command("git", "push", "--set-upstream", "origin", "update/DESSO-"+ticket).Run()
