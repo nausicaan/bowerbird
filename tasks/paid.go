@@ -20,16 +20,18 @@ type WordPress struct {
 }
 
 var (
-	wordpress WordPress
-	splitz    []string
+	wordpress      WordPress
+	number, folder []string
 )
 
 // Paid contains a sequential list of tasks to run to complete the program
 func Paid() {
+	jsonParse()
 	plugin, ticket = os.Args[2], os.Args[3]
-	splitz = strings.SplitAfter(plugin, ":")
-	wordpress.Version = splitz[1]
-	if wordpress.Name == plugin {
+	number = strings.SplitAfter(plugin, ":")
+	folder = strings.SplitAfter(wordpress.Name, "/")
+	wordpress.Version = number[1]
+	if wordpress.Name+":"+wordpress.Version == plugin {
 		execute()
 	} else {
 		fmt.Println("plugin name does not match composer.json entry - program halted")
@@ -38,7 +40,6 @@ func Paid() {
 
 // A sequential list of tasks run to complete the program
 func execute() {
-	jsonParse()
 	prepare()
 	checkout()
 	script()
@@ -63,7 +64,7 @@ func checkout() {
 
 // Run the update script
 func script() {
-	exec.Command("/bin/bash", "-c", "scripts/update.sh ~/Downloads/"+splitz[0]+"/").Run()
+	exec.Command("/bin/bash", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/").Run()
 }
 
 // Convert the WordPress structure back into json and overwrite the composer.json file
