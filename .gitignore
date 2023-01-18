@@ -16,5 +16,7 @@
 test/
 vendor/
 
-## Default MacOS "Desktop Services" finder settings file
+## Default desktop settings files
 .DS_Store
+Thumbs.db
+.idea

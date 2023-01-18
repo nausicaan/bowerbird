@@ -12,7 +12,7 @@ Simplify the process of pulling free updates from [WordPress Packagist](https://
 
 From the root folder containing *main.go*, use the command that matches your environment:
 
-### Mac:
+### Windows & Mac:
 
 ```bash
 go build -o <build_location>/<program_name> main.go
