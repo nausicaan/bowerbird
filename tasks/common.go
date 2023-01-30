@@ -7,11 +7,13 @@ import (
 
 var (
 	plugin, ticket string
-	ArgLength      = len(os.Args)
-	Flag           = Verify()
+	// ArgLength measures the number of total arguments
+	ArgLength = len(os.Args)
+	// Flag holds the type argument
+	Flag = verify()
 )
 
-func Verify() string {
+func verify() string {
 	var f string
 	if ArgLength < 2 {
 		f = "-zzz"

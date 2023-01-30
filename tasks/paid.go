@@ -9,13 +9,14 @@ import (
 	"strings"
 )
 
-// Structure to hold the contents of the composer.json file
+// WordPress structure to hold the contents of the composer.json file
 type WordPress struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
 	Require struct {
-		ComposerInstallers string `json:"composer/installers"`
+		ComposerInstallers                string `json:"composer/installers"`
+		WpackagistPluginTheEventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
 	} `json:"require"`
 }
 
