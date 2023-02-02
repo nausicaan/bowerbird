@@ -46,7 +46,13 @@ Navigate to the folder containing your *composer.json* file and run:
 ~/Documents/programs/wp-updater -f wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
 ```
 
-Multiple updates, chain together as many as you like!
+### Release:
+
+```bash
+~/Documents/programs/wp-updater -r bcgov-plugin/events-virtual:1.13.4 795
+```
+
+Flags `-r` and `-f` can accept multiple updates, chain together as many as you like!
 
 ```bash
 ~/Documents/programs/wp-updater -f wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762

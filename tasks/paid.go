@@ -25,12 +25,26 @@ var (
 	number, folder []string
 )
 
+// Release does
+func Release() {
+	assign()
+	// plugin, ticket = os.Args[2], os.Args[3]
+	// number = strings.Split(plugin, ":")
+	// folder = strings.Split(number[0], "/")
+	prepare()
+	checkout(relbranch)
+	update()
+	sift()
+	push()
+}
+
 // Paid contains a sequential list of tasks to run to complete the program
 func Paid() {
 	jsonParse()
-	plugin, ticket = os.Args[2], os.Args[3]
-	number = strings.SplitAfter(plugin, ":")
-	folder = strings.SplitAfter(wordpress.Name, "/")
+	assign()
+	// plugin, ticket = os.Args[2], os.Args[3]
+	// number = strings.Split(plugin, ":")
+	// folder = strings.Split(number[0], "/")
 	wordpress.Version = number[1]
 	if wordpress.Name+":"+wordpress.Version == plugin {
 		execute()
@@ -39,10 +53,16 @@ func Paid() {
 	}
 }
 
+func assign() {
+	plugin, ticket = os.Args[2], os.Args[3]
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
+}
+
 // A sequential list of tasks run to complete the program
 func execute() {
 	prepare()
-	checkout()
+	checkout(upbranch)
 	script()
 	jsonWrite()
 	commit()
@@ -56,11 +76,6 @@ func jsonParse() {
 	defer current.Close()
 	byteValue, _ := io.ReadAll(current)
 	json.Unmarshal(byteValue, &wordpress)
-}
-
-// Create an update branch to work from
-func checkout() {
-	exec.Command("git", "checkout", "-b", "update/DESSO-"+ticket).Run()
 }
 
 // Run the update script
