@@ -34,6 +34,8 @@ Navigate to the folder containing your *composer.json* file and run:
 
 ## Examples
 
+Currently there are three supported scenarios available, using flags to specify each.
+
 ### Premium:
 
 ```bash
@@ -43,7 +45,7 @@ Navigate to the folder containing your *composer.json* file and run:
 ### Free:
 
 ```bash
-~/Documents/programs/wp-updater -f wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
+~/Documents/programs/wp-updater -f wpackagist-plugin/mailpoet:5.5.2 762
 ```
 
 ### Release:
@@ -53,10 +55,6 @@ Navigate to the folder containing your *composer.json* file and run:
 ```
 
 Flags `-r` and `-f` can accept multiple updates, chain together as many as you like!
-
-```bash
-~/Documents/programs/wp-updater -f wpackagist-plugin/redis-cache:2.2.3 761 wpackagist-plugin/spotlight-social-photo-feeds:1.4.2 762
-```
 
 ## License
 
