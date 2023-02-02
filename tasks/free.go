@@ -13,13 +13,18 @@ func Free() {
 	push()
 }
 
+// Run the general composer update command to check for lock file updates
 func update() {
 	exec.Command("composer", "update").Run()
 }
 
 // Run the composer require command
 func require() {
-	exec.Command("composer", "require", plugin).Run()
+	if Flag == "-r" {
+		exec.Command("COMPOSER=composer-prod.json composer", "require", plugin).Run()
+	} else {
+		exec.Command("composer", "require", plugin).Run()
+	}
 }
 
 // Iterate through the Args array and assign plugin and ticket values

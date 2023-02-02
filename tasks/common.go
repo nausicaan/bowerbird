@@ -17,6 +17,7 @@ var (
 	Flag = verify()
 )
 
+// Test for the minimum amount of arguments
 func verify() string {
 	var f string
 	if ArgLength < 2 {

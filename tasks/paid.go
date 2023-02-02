@@ -53,6 +53,7 @@ func Paid() {
 	}
 }
 
+// Split the supplied arguments and assign them to variables
 func assign() {
 	plugin, ticket = os.Args[2], os.Args[3]
 	number = strings.Split(plugin, ":")
