@@ -1,6 +1,6 @@
-# WordPress Updater
+# WordPress Update Install
 
-Simplify the process of pulling free updates from [WordPress Packagist](https://wpackagist.org) or premium updates from a subscription, pushing them to Git and adding version tags to Satis, if applicable.
+Simplify the process of pulling free updates from [WordPress Packagist](https://repo.packagist.org) or premium updates from a subscription, then pushing them to Git and adding version tags to a private repository like Satis, if needed.
 
 ## Prerequisites
 
@@ -39,19 +39,19 @@ Currently there are three supported scenarios available, using flags to specify 
 ### Premium:
 
 ```bash
-~/Documents/programs/wp-updater -p bcgov-plugin/gravityforms:2.6.8.4 759
+~/Documents/programs/upinstall -p bcgov-plugin/gravityforms:2.6.8.4 759
 ```
 
 ### Free:
 
 ```bash
-~/Documents/programs/wp-updater -f wpackagist-plugin/mailpoet:5.5.2 762
+~/Documents/programs/upinstall -f wpackagist-plugin/mailpoet:5.5.2 762
 ```
 
 ### Release:
 
 ```bash
-~/Documents/programs/wp-updater -r bcgov-plugin/events-virtual:1.13.4 795
+~/Documents/programs/upinstall -r bcgov-plugin/events-virtual:1.13.4 795
 ```
 
 Flags `-r` and `-f` can accept multiple updates, chain together as many as you like!
