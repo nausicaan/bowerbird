@@ -3,48 +3,64 @@ package main
 import (
 	"fmt"
 
-	t "github.com/nausicaan/wp-updater/tasks"
+	t "github.com/nausicaan/upinstall/tasks"
 )
 
-var buildVersion = "1.0.1"
+var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - program halted"
 
 // Launch the program and execute the selected program abilities
 func main() {
 	switch t.Flag {
 	case "-v":
-		fmt.Println("Updater", buildVersion)
-	case "-zzz":
+		fmt.Println("Upcheck", buildVersion)
+	case "--version":
+		fmt.Println("Upcheck", buildVersion)
+	case "--zero":
 		fmt.Println("No flag detected - program halted")
 	case "-h":
-		fmt.Println()
-		fmt.Println("Usage: [program_name] [flag] [full_plugin_name]:[update_version] [jira_ticket_number]")
-		fmt.Println("\n  -f	Free Plugin Update")
-		fmt.Println("  -h	Help Information")
-		fmt.Println("  -p	Premium Plugin Update")
-		fmt.Println("  -r	Production Release Plugin Updates")
-		fmt.Println("  -v	Display App Version")
-		fmt.Println()
-	case "-f":
-		if t.ArgLength >= 4 {
-			t.Free()
-		} else {
-			fmt.Println("Insufficient arguments supplied - program halted")
-		}
+		helpMenu()
+	case "--help":
+		helpMenu()
+	case "-w":
+		testWR(t.Flag)
 	case "-r":
-		if t.ArgLength >= 4 {
-			t.Release()
-		} else {
-			fmt.Println("Insufficient arguments supplied - program halted")
-		}
+		testWR(t.Flag)
 	case "-p":
-		if t.ArgLength < 4 {
-			fmt.Println("Insufficient arguments supplied - program halted")
-		} else if t.ArgLength > 4 {
-			fmt.Println("Too many arguments supplied - program halted")
-		} else {
-			t.Paid()
-		}
+		testP()
 	default:
 		fmt.Println("Incorrect flag detected - program halted")
+	}
+}
+
+func helpMenu() {
+	fmt.Println("\nUsage: [program_name] [flag] [full_plugin_name]:[update_version] [jira_ticket_number]")
+	fmt.Println("\n  -p	Premium Plugin Update")
+	fmt.Println("  -r	Production Release Plugin Updates")
+	fmt.Println("  -w	WPackagist Plugin Updates")
+	fmt.Println("  -v	--version	Display App Version")
+	fmt.Println("  -h	--help		Help Information")
+	fmt.Println()
+}
+
+func testWR(flag string) {
+	if t.ArgLength >= 4 {
+		switch flag {
+		case "-w":
+			t.WPackagist()
+		case "-r":
+			t.Release()
+		}
+	} else {
+		fmt.Println(zero)
+	}
+}
+
+func testP() {
+	if t.ArgLength < 4 {
+		fmt.Println(zero)
+	} else if t.ArgLength > 4 {
+		fmt.Println("Too many arguments supplied - program halted")
+	} else {
+		t.Premium()
 	}
 }

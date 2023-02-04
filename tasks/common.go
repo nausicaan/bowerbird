@@ -3,6 +3,7 @@ package tasks
 import (
 	"os"
 	"os/exec"
+	"strings"
 )
 
 const (
@@ -10,9 +11,9 @@ const (
 )
 
 var (
-	plugin, ticket string
 	// ArgLength measures the number of total arguments
 	ArgLength = len(os.Args)
+
 	// Flag holds the type argument
 	Flag = verify()
 )
@@ -21,17 +22,36 @@ var (
 func verify() string {
 	var f string
 	if ArgLength < 2 {
-		f = "-zzz"
+		f = "--zero"
 	} else {
 		f = os.Args[1]
 	}
 	return f
 }
 
+// Split the supplied arguments and assign them to variables
+func assign() {
+	plugin, ticket = os.Args[2], os.Args[3]
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
+}
+
+// Choose the command based on the composer.json file targeted
+func choose() *exec.Cmd {
+	var c *exec.Cmd
+	if Flag == "-r" {
+		c = exec.Command("COMPOSER=composer-prod.json composer", "require", plugin)
+	} else {
+		c = exec.Command("composer", "require", plugin)
+	}
+	return c
+}
+
 // Switch to the desired branch, pull any changes, and run a composer update
 func prepare() {
+	runcmd = choose()
 	var branch string
-	if Flag == "-f" {
+	if Flag == "-w" {
 		branch = "development"
 	} else if Flag == "-p" && folder[0] == "bcgov-plugin/events-virtual" {
 		branch = "main"
@@ -54,10 +74,10 @@ func commit() {
 }
 
 // Push to the git repository
-func push() {
-	if Flag == "-f" {
+func push(where string) {
+	if Flag == "-w" {
 		exec.Command("git", "push").Run()
 	} else {
-		exec.Command("git", "push", "--set-upstream", "origin", upbranch+ticket).Run()
+		exec.Command("git", "push", "--set-upstream", "origin", where+ticket).Run()
 	}
 }

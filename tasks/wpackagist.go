@@ -5,12 +5,21 @@ import (
 	"os/exec"
 )
 
-// Free contains a sequential list of tasks run to complete the program
-func Free() {
+// WPackagist contains a sequential list of tasks run to complete the program
+func WPackagist() {
 	prepare()
 	update()
 	sift()
-	push()
+	push("")
+}
+
+// Release adds the previously tested plugins to the composer-prod.json file
+func Release() {
+	assign()
+	prepare()
+	checkout(relbranch)
+	sift()
+	push(relbranch)
 }
 
 // Run the general composer update command to check for lock file updates
@@ -20,11 +29,12 @@ func update() {
 
 // Run the composer require command
 func require() {
-	if Flag == "-r" {
-		exec.Command("COMPOSER=composer-prod.json composer", "require", plugin).Run()
-	} else {
-		exec.Command("composer", "require", plugin).Run()
-	}
+	runcmd.Run()
+	// if Flag == "-r" {
+	// 	exec.Command(prodprefix, "composer", "require", plugin).Run()
+	// } else {
+	// 	exec.Command("composer", "require", plugin).Run()
+	// }
 }
 
 // Iterate through the Args array and assign plugin and ticket values

@@ -1,3 +1,3 @@
-module github.com/nausicaan/wp-updater
+module github.com/nausicaan/upinstall
 
 go 1.19

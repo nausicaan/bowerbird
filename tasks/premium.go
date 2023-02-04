@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"strings"
 )
 
 // WordPress structure to hold the contents of the composer.json file
@@ -23,41 +22,20 @@ type WordPress struct {
 var (
 	wordpress      WordPress
 	number, folder []string
+	plugin, ticket string
+	runcmd         *exec.Cmd
 )
 
-// Release does
-func Release() {
-	assign()
-	// plugin, ticket = os.Args[2], os.Args[3]
-	// number = strings.Split(plugin, ":")
-	// folder = strings.Split(number[0], "/")
-	prepare()
-	checkout(relbranch)
-	update()
-	sift()
-	push()
-}
-
-// Paid contains a sequential list of tasks to run to complete the program
-func Paid() {
+// Premium contains a sequential list of tasks to run to complete the program
+func Premium() {
 	jsonParse()
 	assign()
-	// plugin, ticket = os.Args[2], os.Args[3]
-	// number = strings.Split(plugin, ":")
-	// folder = strings.Split(number[0], "/")
 	wordpress.Version = number[1]
 	if wordpress.Name+":"+wordpress.Version == plugin {
 		execute()
 	} else {
 		fmt.Println("plugin name does not match composer.json entry - program halted")
 	}
-}
-
-// Split the supplied arguments and assign them to variables
-func assign() {
-	plugin, ticket = os.Args[2], os.Args[3]
-	number = strings.Split(plugin, ":")
-	folder = strings.Split(number[0], "/")
 }
 
 // A sequential list of tasks run to complete the program
@@ -67,7 +45,7 @@ func execute() {
 	script()
 	jsonWrite()
 	commit()
-	push()
+	push(upbranch)
 	tags()
 }
 

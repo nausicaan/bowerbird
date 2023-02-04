@@ -42,10 +42,10 @@ Currently there are three supported scenarios available, using flags to specify 
 ~/Documents/programs/upinstall -p bcgov-plugin/gravityforms:2.6.8.4 759
 ```
 
-### Free:
+### WPackagist:
 
 ```bash
-~/Documents/programs/upinstall -f wpackagist-plugin/mailpoet:5.5.2 762
+~/Documents/programs/upinstall -w wpackagist-plugin/mailpoet:5.5.2 762
 ```
 
 ### Release:
@@ -54,7 +54,7 @@ Currently there are three supported scenarios available, using flags to specify 
 ~/Documents/programs/upinstall -r bcgov-plugin/events-virtual:1.13.4 795
 ```
 
-Flags `-r` and `-f` can accept multiple updates, chain together as many as you like!
+Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
 
 ## License
 
