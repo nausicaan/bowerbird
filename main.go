@@ -6,21 +6,23 @@ import (
 	t "github.com/nausicaan/upinstall/tasks"
 )
 
-// Colour Palette
 const (
-	reset  = "\033[0m"
-	red    = "\033[31m"
-	green  = "\033[32m"
-	yellow = "\033[33m"
+	bv     string = "1.0.1"
+	reset  string = "\033[0m"
+	red    string = "\033[31m"
+	green  string = "\033[32m"
+	yellow string = "\033[33m"
+	halt   string = red + "program halted"
+	zero   string = "Insufficient arguments supplied - " + halt
 )
 
-var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - program halted"
+// var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - " + halt
 
 // Launch the program and execute the selected program abilities
 func main() {
 	switch t.Flag {
 	case "-v", "--version":
-		fmt.Println(yellow+"upinstall", green+buildVersion)
+		fmt.Println(yellow+"upinstall", green+bv)
 	case "-h", "--help":
 		helpMenu()
 	case "-w", "--wpackagist", "-r", "--release":
@@ -28,10 +30,10 @@ func main() {
 	case "-p", "--premium":
 		testP()
 	case "--zero":
-		fmt.Println("No flag detected -", red+"program halted")
+		fmt.Println("No flag detected -", halt)
 		fmt.Println()
 	default:
-		fmt.Println("Incorrect flag detected -", red+"program halted")
+		fmt.Println("Incorrect flag detected -", halt)
 		fmt.Println()
 	}
 }
@@ -47,8 +49,11 @@ func helpMenu() {
 	fmt.Println(green, " -v, --version", reset, "	Display App Version")
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
-	fmt.Println("  Navigate to the folder containing your composer.json file and run:")
+	fmt.Println("  In the folder containing your composer.json file, run:")
 	fmt.Println(green, "\n    ~/Documents/programs/upinstall -w wpackagist-plugin/mailpoet:5.5.2 762")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  For more information go to:")
+	fmt.Println(green, "\n    https://github.com/nausicaan/upinstall.git")
 	fmt.Println()
 }
 
@@ -63,6 +68,7 @@ func testWR(flag string) {
 		}
 	} else {
 		fmt.Println(zero)
+		fmt.Println()
 	}
 }
 
@@ -71,7 +77,8 @@ func testP() {
 	if t.ArgLength < 4 {
 		fmt.Println(zero)
 	} else if t.ArgLength > 4 {
-		fmt.Println("Too many arguments supplied - program halted")
+		fmt.Println("Too many arguments supplied -", halt)
+		fmt.Println()
 	} else {
 		t.Premium()
 	}
