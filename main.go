@@ -16,13 +16,11 @@ const (
 	zero   string = "Insufficient arguments supplied - " + halt
 )
 
-// var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - " + halt
-
 // Launch the program and execute the selected program abilities
 func main() {
 	switch t.Flag {
 	case "-v", "--version":
-		fmt.Println(yellow+"upinstall", green+bv)
+		fmt.Println(yellow+"Bowerbird", green+bv)
 	case "-h", "--help":
 		helpMenu()
 	case "-w", "--wpackagist", "-r", "--release":
