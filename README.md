@@ -14,13 +14,13 @@ From the root folder containing *main.go*, use the command that matches your env
 
 ### Windows & Mac:
 
-```bash
+```console
 go build -o <build_location>/<program_name> main.go
 ```
 
 ### Linux:
 
-```bash
+```console
 GOOS=linux GOARCH=amd64 go build -o <build_location>/<program_name> main.go
 ```
 
@@ -28,7 +28,7 @@ GOOS=linux GOARCH=amd64 go build -o <build_location>/<program_name> main.go
 
 Navigate to the folder containing your *composer.json* file and run:
 
-```bash
+```console
 <build_location>/<program_name> <flag> <full_plugin_name>:<update_version> <jira_ticket_number>
 ```
 
@@ -38,19 +38,19 @@ Currently there are three supported scenarios available, using flags to specify 
 
 ### Premium:
 
-```bash
+```console
 ~/Documents/programs/upinstall -p bcgov-plugin/gravityforms:2.6.8.4 759
 ```
 
 ### WPackagist:
 
-```bash
+```console
 ~/Documents/programs/upinstall -w wpackagist-plugin/mailpoet:5.5.2 762
 ```
 
 ### Release:
 
-```bash
+```console
 ~/Documents/programs/upinstall -r bcgov-plugin/events-virtual:1.13.4 795
 ```
 

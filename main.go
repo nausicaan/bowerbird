@@ -6,48 +6,59 @@ import (
 	t "github.com/nausicaan/upinstall/tasks"
 )
 
+// Colour Palette
+const (
+	reset  = "\033[0m"
+	red    = "\033[31m"
+	green  = "\033[32m"
+	yellow = "\033[33m"
+)
+
 var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - program halted"
 
 // Launch the program and execute the selected program abilities
 func main() {
 	switch t.Flag {
-	case "-v":
+	case "-v", "--version":
 		fmt.Println("Upcheck", buildVersion)
-	case "--version":
-		fmt.Println("Upcheck", buildVersion)
-	case "--zero":
-		fmt.Println("No flag detected - program halted")
-	case "-h":
+	case "-h", "--help":
 		helpMenu()
-	case "--help":
-		helpMenu()
-	case "-w":
+	case "-w", "--wpackagist", "-r", "--release":
 		testWR(t.Flag)
-	case "-r":
-		testWR(t.Flag)
-	case "-p":
+	case "-p", "--premium":
 		testP()
+	case "--zero":
+		fmt.Println("No flag detected -", red+"program halted")
+		fmt.Println()
 	default:
-		fmt.Println("Incorrect flag detected - program halted")
+		fmt.Println("Incorrect flag detected -", red+"program halted")
+		fmt.Println()
 	}
 }
 
+// Print the help information
 func helpMenu() {
-	fmt.Println("\nUsage: [program_name] [flag] [full_plugin_name]:[update_version] [jira_ticket_number]")
-	fmt.Println("\n  -p	Premium Plugin Update")
-	fmt.Println("  -r	Production Release Plugin Updates")
-	fmt.Println("  -w	WPackagist Plugin Updates")
-	fmt.Println("  -v	--version	Display App Version")
-	fmt.Println("  -h	--help		Help Information")
+	fmt.Println(yellow, "\nUsage:")
+	fmt.Println(reset, " [program_name] [flag] [full_plugin_name]:[update_version] [jira_ticket_number]")
+	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Updates")
+	fmt.Println(green, " -w, --wpackagist", reset, "	WPackagist Plugin Updates")
+	fmt.Println(green, " -v, --version", reset, "	Display App Version")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  Navigate to the folder containing your *composer.json* file and run:")
+	fmt.Println(green, "\n    <build_location>/<program_name> <flag> <full_plugin_name>:<update_version> <jira_ticket_number>")
 	fmt.Println()
 }
 
+// Determine which function to call based on the passed variable.
 func testWR(flag string) {
 	if t.ArgLength >= 4 {
 		switch flag {
-		case "-w":
+		case "-w", "--wpackagist":
 			t.WPackagist()
-		case "-r":
+		case "-r", "--release":
 			t.Release()
 		}
 	} else {
@@ -55,6 +66,7 @@ func testWR(flag string) {
 	}
 }
 
+// Call the Premium function if the required arguments are supplied
 func testP() {
 	if t.ArgLength < 4 {
 		fmt.Println(zero)
