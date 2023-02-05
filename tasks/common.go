@@ -11,9 +11,12 @@ const (
 )
 
 var (
+	wordpress      WordPress
+	number, folder []string
+	plugin, ticket string
+	runcmd         *exec.Cmd
 	// ArgLength measures the number of total arguments
 	ArgLength = len(os.Args)
-
 	// Flag holds the type argument
 	Flag = verify()
 )

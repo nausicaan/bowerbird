@@ -20,7 +20,7 @@ var buildVersion, zero = "1.0.1", "Insufficient arguments supplied - program hal
 func main() {
 	switch t.Flag {
 	case "-v", "--version":
-		fmt.Println("Upcheck", buildVersion)
+		fmt.Println(yellow+"upinstall", green+buildVersion)
 	case "-h", "--help":
 		helpMenu()
 	case "-w", "--wpackagist", "-r", "--release":
@@ -38,17 +38,17 @@ func main() {
 
 // Print the help information
 func helpMenu() {
-	fmt.Println(yellow, "\nUsage:")
-	fmt.Println(reset, " [program_name] [flag] [full_plugin_name]:[update_version] [jira_ticket_number]")
+	fmt.Println(yellow, "\nUsage:", reset)
+	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
 	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Update")
 	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Updates")
 	fmt.Println(green, " -w, --wpackagist", reset, "	WPackagist Plugin Updates")
 	fmt.Println(green, " -v, --version", reset, "	Display App Version")
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
-	fmt.Println(yellow, "\nHelp:", reset)
-	fmt.Println("  Navigate to the folder containing your *composer.json* file and run:")
-	fmt.Println(green, "\n    <build_location>/<program_name> <flag> <full_plugin_name>:<update_version> <jira_ticket_number>")
+	fmt.Println(yellow, "\nExample:", reset)
+	fmt.Println("  Navigate to the folder containing your composer.json file and run:")
+	fmt.Println(green, "\n    ~/Documents/programs/upinstall -w wpackagist-plugin/mailpoet:5.5.2 762")
 	fmt.Println()
 }
 

@@ -15,13 +15,13 @@ From the root folder containing *main.go*, use the command that matches your env
 ### Windows & Mac:
 
 ```console
-go build -o <build_location>/<program_name> main.go
+go build -o [name] main.go
 ```
 
 ### Linux:
 
 ```console
-GOOS=linux GOARCH=amd64 go build -o <build_location>/<program_name> main.go
+GOOS=linux GOARCH=amd64 go build -o [name] main.go
 ```
 
 ## Run
@@ -29,7 +29,7 @@ GOOS=linux GOARCH=amd64 go build -o <build_location>/<program_name> main.go
 Navigate to the folder containing your *composer.json* file and run:
 
 ```console
-<build_location>/<program_name> <flag> <full_plugin_name>:<update_version> <jira_ticket_number>
+[program] [flag] [vendor/plugin]:[version] [ticket#]
 ```
 
 ## Examples

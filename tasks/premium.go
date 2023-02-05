@@ -19,13 +19,6 @@ type WordPress struct {
 	} `json:"require"`
 }
 
-var (
-	wordpress      WordPress
-	number, folder []string
-	plugin, ticket string
-	runcmd         *exec.Cmd
-)
-
 // Premium contains a sequential list of tasks to run to complete the program
 func Premium() {
 	jsonParse()
