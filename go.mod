@@ -1,3 +1,3 @@
-module github.com/nausicaan/upinstall
+module github.com/nausicaan/bowerbird
 
 go 1.19

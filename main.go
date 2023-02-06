@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	t "github.com/nausicaan/upinstall/tasks"
+	t "github.com/nausicaan/bowerbird/tasks"
 )
 
 const (
