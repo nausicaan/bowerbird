@@ -48,10 +48,10 @@ func helpMenu() {
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
 	fmt.Println("  In the folder containing your composer.json file, run:")
-	fmt.Println(green, "\n    ~/Documents/programs/upinstall -w wpackagist-plugin/mailpoet:5.5.2 762")
+	fmt.Println(green, "\n    ~/Documents/programs/bowerbird -w wpackagist-plugin/mailpoet:5.5.2 762")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
-	fmt.Println(green, "\n    https://github.com/nausicaan/upinstall.git")
+	fmt.Println(green, "\n    https://github.com/nausicaan/bowerbird.git")
 	fmt.Println()
 }
 
@@ -60,8 +60,10 @@ func testWR(flag string) {
 	if t.ArgLength >= 4 {
 		switch flag {
 		case "-w", "--wpackagist":
+			t.Edict = "composer"
 			t.WPackagist()
 		case "-r", "--release":
+			t.Edict = "COMPOSER=composer-prod.json composer"
 			t.Release()
 		}
 	} else {

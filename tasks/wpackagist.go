@@ -27,14 +27,9 @@ func update() {
 	exec.Command("composer", "update").Run()
 }
 
-// Run the composer require command
+// Run the appropriate composer require command
 func require() {
-	runcmd.Run()
-	// if Flag == "-r" {
-	// 	exec.Command(prodprefix, "composer", "require", plugin).Run()
-	// } else {
-	// 	exec.Command("composer", "require", plugin).Run()
-	// }
+	exec.Command(Edict, "require", plugin).Run()
 }
 
 // Iterate through the Args array and assign plugin and ticket values

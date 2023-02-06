@@ -14,7 +14,8 @@ var (
 	wordpress      WordPress
 	number, folder []string
 	plugin, ticket string
-	runcmd         *exec.Cmd
+	// Edict holds the type of composer command
+	Edict string
 	// ArgLength measures the number of total arguments
 	ArgLength = len(os.Args)
 	// Flag holds the type argument
@@ -39,20 +40,9 @@ func assign() {
 	folder = strings.Split(number[0], "/")
 }
 
-// Choose the command based on the composer.json file targeted
-func choose() *exec.Cmd {
-	var c *exec.Cmd
-	if Flag == "-r" {
-		c = exec.Command("COMPOSER=composer-prod.json composer", "require", plugin)
-	} else {
-		c = exec.Command("composer", "require", plugin)
-	}
-	return c
-}
-
 // Switch to the desired branch, pull any changes, and run a composer update
 func prepare() {
-	runcmd = choose()
+	// runcmd = choose()
 	var branch string
 	if Flag == "-w" {
 		branch = "development"
