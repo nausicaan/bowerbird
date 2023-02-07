@@ -39,19 +39,19 @@ Currently there are three supported scenarios available, using flags to specify 
 ### Premium:
 
 ```console
-~/Documents/programs/bowerbird -p bcgov-plugin/gravityforms:2.6.8.4 759
+bowerbird -p bcgov-plugin/events-virtual:1.13.4 795
 ```
 
 ### WPackagist:
 
 ```console
-~/Documents/programs/bowerbird -w wpackagist-plugin/mailpoet:5.5.2 762
+bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821
 ```
 
 ### Release:
 
 ```console
-~/Documents/programs/bowerbird -r bcgov-plugin/events-virtual:1.13.4 795
+bowerbird -r bcgov-plugin/bcgov-inline-comments:1.9.0 820
 ```
 
 Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
