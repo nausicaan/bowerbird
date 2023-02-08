@@ -26,6 +26,7 @@ func main() {
 	case "-w", "--wpackagist", "-r", "--release":
 		testWR(t.Flag)
 	case "-p", "--premium":
+		t.Flag = "-p"
 		testP()
 	case "--zero":
 		fmt.Println("No flag detected -", halt)
@@ -48,7 +49,7 @@ func helpMenu() {
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
 	fmt.Println("  In the folder containing your composer.json file, run:")
-	fmt.Println(green, "\n    ~/Documents/programs/bowerbird -w wpackagist-plugin/mailpoet:5.5.2 762")
+	fmt.Println(green, "\n    bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "\n    https://github.com/nausicaan/bowerbird.git")
@@ -60,10 +61,10 @@ func testWR(flag string) {
 	if t.ArgLength >= 4 {
 		switch flag {
 		case "-w", "--wpackagist":
-			t.Edict = "composer"
+			t.Flag = "-w"
 			t.WPackagist()
 		case "-r", "--release":
-			t.Edict = "COMPOSER=composer-prod.json composer"
+			t.Flag = "-r"
 			t.Release()
 		}
 	} else {

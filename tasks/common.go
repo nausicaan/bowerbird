@@ -7,13 +7,14 @@ import (
 )
 
 const (
-	upbranch, relbranch string = "update/DESSO-", "release/DESSO-"
+	upbranch, relbranch string = "update/DESSO-", "release/"
 )
 
 var (
-	wordpress      WordPress
-	number, folder []string
-	plugin, ticket string
+	wordpress               WordPress
+	events                  Events
+	number, folder          []string
+	plugin, ticket, release string
 	// Edict holds the type of composer command
 	Edict string
 	// ArgLength measures the number of total arguments
@@ -34,15 +35,14 @@ func verify() string {
 }
 
 // Split the supplied arguments and assign them to variables
-func assign() {
-	plugin, ticket = os.Args[2], os.Args[3]
+func assign(p, t string) {
+	plugin, ticket = p, t
 	number = strings.Split(plugin, ":")
 	folder = strings.Split(number[0], "/")
 }
 
 // Switch to the desired branch, pull any changes, and run a composer update
 func prepare() {
-	// runcmd = choose()
 	var branch string
 	if Flag == "-w" {
 		branch = "development"
@@ -57,7 +57,11 @@ func prepare() {
 
 // Create an update branch to work from
 func checkout(prefix string) {
-	exec.Command("git", "checkout", "-b", prefix+ticket).Run()
+	if Flag == "-r" {
+		exec.Command("git", "checkout", "-b", prefix+release).Run()
+	} else {
+		exec.Command("git", "checkout", "-b", prefix+ticket).Run()
+	}
 }
 
 // Add and commit the update
@@ -70,6 +74,8 @@ func commit() {
 func push(where string) {
 	if Flag == "-w" {
 		exec.Command("git", "push").Run()
+	} else if Flag == "-r" {
+		exec.Command("git", "push", "--set-upstream", "origin", where+release).Run()
 	} else {
 		exec.Command("git", "push", "--set-upstream", "origin", where+ticket).Run()
 	}

@@ -6,10 +6,21 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // WordPress structure to hold the contents of the composer.json file
 type WordPress struct {
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	Type    string `json:"type"`
+	Require struct {
+		ComposerInstallers string `json:"composer/installers"`
+	} `json:"require"`
+}
+
+// Events structure to hold the contents of the composer.json file
+type Events struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
@@ -22,7 +33,7 @@ type WordPress struct {
 // Premium contains a sequential list of tasks to run to complete the program
 func Premium() {
 	jsonParse()
-	assign()
+	assign(os.Args[2], os.Args[3])
 	wordpress.Version = number[1]
 	if wordpress.Name+":"+wordpress.Version == plugin {
 		execute()
@@ -48,6 +59,7 @@ func jsonParse() {
 	defer current.Close()
 	byteValue, _ := io.ReadAll(current)
 	json.Unmarshal(byteValue, &wordpress)
+	json.Unmarshal(byteValue, &events)
 }
 
 // Run the update script
@@ -57,7 +69,12 @@ func script() {
 
 // Convert the WordPress structure back into json and overwrite the composer.json file
 func jsonWrite() {
-	updated, _ := json.MarshalIndent(wordpress, "", "    ")
+	var updated []byte
+	if strings.Contains(events.Name, "event") {
+		updated, _ = json.MarshalIndent(events, "", "    ")
+	} else {
+		updated, _ = json.MarshalIndent(wordpress, "", "    ")
+	}
 	os.WriteFile("composer.json", updated, 0644)
 }
 
