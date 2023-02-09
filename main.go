@@ -13,7 +13,7 @@ const (
 	yellow string = "\033[33m"
 	red    string = "\033[41m"
 	halt   string = "program halted "
-	zero   string = "Insufficient arguments supplied - " + halt
+	zero   string = "Insufficient arguments supplied -"
 )
 
 // Launch the program and execute the selected program abilities
@@ -29,17 +29,9 @@ func main() {
 		t.Flag = "-p"
 		testP()
 	case "--zero":
-		fmt.Println()
-		fmt.Println(red, "                                  ")
-		fmt.Println(" No flag detected -", halt)
-		fmt.Println("                                   ")
-		fmt.Println()
+		errors(" No flag detected -")
 	default:
-		fmt.Println()
-		fmt.Println(red, "                                         ")
-		fmt.Println(red+" Incorrect flag detected -", halt)
-		fmt.Println("                                          ")
-		fmt.Println()
+		errors(" Incorrect flag detected -")
 	}
 }
 
@@ -74,19 +66,22 @@ func testWR(flag string) {
 			t.Release()
 		}
 	} else {
-		fmt.Println(zero)
-		fmt.Println()
+		errors(zero)
 	}
 }
 
 // Call the Premium function if the required arguments are supplied
 func testP() {
 	if t.ArgLength < 4 {
-		fmt.Println(zero)
+		errors(zero)
 	} else if t.ArgLength > 4 {
-		fmt.Println("Too many arguments supplied -", halt)
-		fmt.Println()
+		errors("Too many arguments supplied -")
 	} else {
 		t.Premium()
 	}
+}
+
+func errors(message string) {
+	fmt.Println(red, message, halt)
+	fmt.Println()
 }
