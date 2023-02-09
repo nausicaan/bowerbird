@@ -49,8 +49,8 @@ func execute() {
 	script()
 	jsonWrite()
 	commit()
-	push(upbranch)
 	tags()
+	push(upbranch)
 }
 
 // Read the composer.json file and store the results in the WordPress structure
@@ -81,5 +81,5 @@ func jsonWrite() {
 // Tag the version so Satis can package it
 func tags() {
 	exec.Command("git", "tag", "v"+wordpress.Version).Run()
-	exec.Command("git", "push", "--tags").Run()
+	exec.Command("git", "push", "origin", "--tags").Run()
 }

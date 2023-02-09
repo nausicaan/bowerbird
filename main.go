@@ -9,10 +9,10 @@ import (
 const (
 	bv     string = "1.0.1"
 	reset  string = "\033[0m"
-	red    string = "\033[31m"
 	green  string = "\033[32m"
 	yellow string = "\033[33m"
-	halt   string = red + "program halted"
+	red    string = "\033[41m"
+	halt   string = "program halted "
 	zero   string = "Insufficient arguments supplied - " + halt
 )
 
@@ -29,10 +29,16 @@ func main() {
 		t.Flag = "-p"
 		testP()
 	case "--zero":
-		fmt.Println("No flag detected -", halt)
+		fmt.Println()
+		fmt.Println(red, "                                  ")
+		fmt.Println(" No flag detected -", halt)
+		fmt.Println("                                   ")
 		fmt.Println()
 	default:
-		fmt.Println("Incorrect flag detected -", halt)
+		fmt.Println()
+		fmt.Println(red, "                                         ")
+		fmt.Println(red+" Incorrect flag detected -", halt)
+		fmt.Println("                                          ")
 		fmt.Println()
 	}
 }
