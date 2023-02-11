@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	upbranch, relbranch string = "update/DESSO-", "release/"
+	upbranch, relbranch, counter string = "update/DESSO-", "release/", "/Users/byron/Documents/programs/count.txt"
 )
 
 var (

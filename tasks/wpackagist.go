@@ -17,10 +17,13 @@ func WPackagist() {
 
 // Release adds the previously tested plugins to the composer-prod.json file
 func Release() {
-	byterel, _ := exec.Command("tail", "-n1", "/Users/byron/Documents/programs/count.txt").Output()
+	byterel, _ := exec.Command("tail", "-n1", counter).Output()
 	intrel, _ := strconv.Atoi(string(byterel))
 	intrel++
 	release = fmt.Sprint(intrel)
+	f, _ := os.OpenFile(counter, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f.Write([]byte("\n" + release))
+	defer f.Close()
 	prepare()
 	checkout(relbranch)
 	sift("--no-install")
