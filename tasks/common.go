@@ -11,16 +11,15 @@ const (
 )
 
 var (
-	wordpress               WordPress
-	events                  Events
-	number, folder          []string
-	plugin, ticket, release string
 	// Edict holds the type of composer command
 	Edict string
 	// ArgLength measures the number of total arguments
 	ArgLength = len(os.Args)
 	// Flag holds the type argument
-	Flag = verify()
+	Flag                    = verify()
+	plugin, ticket, release string
+
+	number, folder []string
 )
 
 // Test for the minimum amount of arguments
@@ -46,7 +45,7 @@ func prepare() {
 	var branch string
 	if Flag == "-w" {
 		branch = "development"
-	} else if Flag == "-p" && folder[0] == "bcgov-plugin/events-virtual" {
+	} else if Flag == "-p" && folder[1] == "events-virtual" {
 		branch = "main"
 	} else {
 		branch = "master"

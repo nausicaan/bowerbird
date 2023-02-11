@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// WordPress structure to hold the contents of the composer.json file
-type WordPress struct {
+// Satis structure to hold the contents of the composer.json file
+type Satis struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
@@ -19,8 +19,8 @@ type WordPress struct {
 	} `json:"require"`
 }
 
-// Events structure to hold the contents of the composer.json file
-type Events struct {
+// Event structure to hold the contents of the composer.json file
+type Event struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
@@ -30,12 +30,21 @@ type Events struct {
 	} `json:"require"`
 }
 
+var (
+	norm Satis
+	odd  Event
+)
+
 // Premium contains a sequential list of tasks to run to complete the program
 func Premium() {
 	jsonParse()
 	assign(os.Args[2], os.Args[3])
-	wordpress.Version = number[1]
-	if wordpress.Name+":"+wordpress.Version == plugin {
+	norm.Version, odd.Version = number[1], number[1]
+	if strings.Contains(folder[1], "event") {
+		if odd.Name+":"+odd.Version == plugin {
+			execute()
+		}
+	} else if norm.Name+":"+norm.Version == plugin {
 		execute()
 	} else {
 		fmt.Println("plugin name does not match composer.json entry - program halted")
@@ -56,10 +65,10 @@ func execute() {
 // Read the composer.json file and store the results in the WordPress structure
 func jsonParse() {
 	current, _ := os.Open("composer.json")
-	defer current.Close()
 	byteValue, _ := io.ReadAll(current)
-	json.Unmarshal(byteValue, &wordpress)
-	json.Unmarshal(byteValue, &events)
+	defer current.Close()
+	json.Unmarshal(byteValue, &norm)
+	json.Unmarshal(byteValue, &odd)
 }
 
 // Run the update script
@@ -70,16 +79,16 @@ func script() {
 // Convert the WordPress structure back into json and overwrite the composer.json file
 func jsonWrite() {
 	var updated []byte
-	if strings.Contains(events.Name, "event") {
-		updated, _ = json.MarshalIndent(events, "", "    ")
+	if strings.Contains(odd.Name, "event") {
+		updated, _ = json.MarshalIndent(odd, "", "    ")
 	} else {
-		updated, _ = json.MarshalIndent(wordpress, "", "    ")
+		updated, _ = json.MarshalIndent(norm, "", "    ")
 	}
 	os.WriteFile("composer.json", updated, 0644)
 }
 
 // Tag the version so Satis can package it
 func tags() {
-	exec.Command("git", "tag", "v"+wordpress.Version).Run()
+	exec.Command("git", "tag", "v"+norm.Version).Run()
 	exec.Command("git", "push", "origin", "--tags").Run()
 }
