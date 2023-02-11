@@ -11,15 +11,15 @@ const (
 )
 
 var (
+	// Flag holds the type argument
+	Flag = verify()
 	// Edict holds the type of composer command
 	Edict string
 	// ArgLength measures the number of total arguments
 	ArgLength = len(os.Args)
-	// Flag holds the type argument
-	Flag                    = verify()
-	plugin, ticket, release string
 
-	number, folder []string
+	plugin, ticket, release string
+	number, folder          []string
 )
 
 // Test for the minimum amount of arguments
@@ -70,12 +70,13 @@ func commit() {
 }
 
 // Push to the git repository
-func push(where string) {
-	if Flag == "-w" {
+func push() {
+	switch Flag {
+	case "-r":
+		exec.Command("git", "push", "--set-upstream", "origin", relbranch+release).Run()
+	case "-p":
+		exec.Command("git", "push", "--set-upstream", "origin", upbranch+ticket).Run()
+	default:
 		exec.Command("git", "push").Run()
-	} else if Flag == "-r" {
-		exec.Command("git", "push", "--set-upstream", "origin", where+release).Run()
-	} else {
-		exec.Command("git", "push", "--set-upstream", "origin", where+ticket).Run()
 	}
 }

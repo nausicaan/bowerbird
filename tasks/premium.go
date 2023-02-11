@@ -59,7 +59,7 @@ func execute() {
 	jsonWrite()
 	commit()
 	tags()
-	push(upbranch)
+	push()
 }
 
 // Read the composer.json file and store the results in the WordPress structure

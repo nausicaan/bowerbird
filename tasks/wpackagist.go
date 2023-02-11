@@ -12,7 +12,7 @@ func WPackagist() {
 	prepare()
 	update()
 	sift("--quiet")
-	push("")
+	push()
 }
 
 // Release adds the previously tested plugins to the composer-prod.json file
@@ -24,7 +24,7 @@ func Release() {
 	prepare()
 	checkout(relbranch)
 	sift("--no-install")
-	push(relbranch)
+	push()
 }
 
 // Run the general composer update command to check for lock file updates
