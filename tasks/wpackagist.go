@@ -30,6 +30,12 @@ func Release() {
 	push()
 }
 
+// Errors prints a clolourized error message
+func Errors(message string) {
+	fmt.Println(red, message, halt)
+	fmt.Println()
+}
+
 // Run the general composer update command to check for lock file updates
 func update() {
 	exec.Command("composer", "update").Run()

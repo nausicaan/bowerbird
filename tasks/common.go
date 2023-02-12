@@ -1,26 +1,53 @@
 package tasks
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
 )
 
 const (
-	upbranch, relbranch, counter string = "update/DESSO-", "release/", "/Users/byron/Documents/programs/count.txt"
+	reset     string = "\033[0m"
+	green     string = "\033[32m"
+	yellow    string = "\033[33m"
+	red       string = "\033[41m"
+	relbranch string = "release/"
+	upbranch  string = "update/DESSO-"
+	halt      string = "program halted "
+	zero      string = "Insufficient arguments supplied -"
+	counter   string = "/Users/byron/Documents/programs/count.txt"
 )
 
 var (
+	norm Satis
+	odd  Event
 	// Flag holds the type argument
 	Flag = verify()
-	// Edict holds the type of composer command
-	Edict string
 	// ArgLength measures the number of total arguments
-	ArgLength = len(os.Args)
-
-	plugin, ticket, release string
+	ArgLength               = len(os.Args)
 	number, folder          []string
+	plugin, ticket, release string
 )
+
+// HelpMenu prints the help information
+func HelpMenu() {
+	fmt.Println(yellow, "\nUsage:", reset)
+	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
+	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Updates")
+	fmt.Println(green, " -w, --wpackagist", reset, "	WPackagist Plugin Updates")
+	fmt.Println(green, " -v, --version", reset, "	Display App Version")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(yellow, "\nExample:", reset)
+	fmt.Println("  Against your composer.json file, run:")
+	fmt.Println(green, "    bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  For more information go to:")
+	fmt.Println(green, "    https://github.com/nausicaan/bowerbird.git")
+	fmt.Println()
+}
 
 // Test for the minimum amount of arguments
 func verify() string {

@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -30,11 +29,6 @@ type Event struct {
 	} `json:"require"`
 }
 
-var (
-	norm Satis
-	odd  Event
-)
-
 // Premium contains a sequential list of tasks to run to complete the program
 func Premium() {
 	jsonParse()
@@ -47,7 +41,8 @@ func Premium() {
 	} else if norm.Name+":"+norm.Version == plugin {
 		execute()
 	} else {
-		fmt.Println("plugin name does not match composer.json entry - program halted")
+		// fmt.Println("plugin name does not match composer.json entry - program halted")
+		Errors("Plugin name does not match composer.json entry - program halted")
 	}
 }
 
