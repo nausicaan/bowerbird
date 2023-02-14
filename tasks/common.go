@@ -15,7 +15,6 @@ const (
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
-	zero      string = "Insufficient arguments supplied -"
 	counter   string = "/Users/byron/Documents/programs/count.txt"
 )
 
@@ -46,7 +45,7 @@ func HelpMenu() {
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "    https://github.com/nausicaan/bowerbird.git")
-	fmt.Println()
+	fmt.Println(reset)
 }
 
 // Test for the minimum amount of arguments

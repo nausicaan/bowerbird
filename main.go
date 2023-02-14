@@ -10,7 +10,6 @@ const (
 	bv     string = "1.0.1"
 	green  string = "\033[32m"
 	yellow string = "\033[33m"
-	halt   string = "program halted "
 	zero   string = "Insufficient arguments supplied -"
 )
 
@@ -27,9 +26,9 @@ func main() {
 		t.Flag = "-p"
 		testP()
 	case "--zero":
-		t.Errors(" No flag detected -")
+		t.Errors("No flag detected -")
 	default:
-		t.Errors(" Incorrect flag detected -")
+		t.Errors("Bad flag detected -")
 	}
 }
 

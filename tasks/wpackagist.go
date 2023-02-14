@@ -33,7 +33,7 @@ func Release() {
 // Errors prints a clolourized error message
 func Errors(message string) {
 	fmt.Println(red, message, halt)
-	fmt.Println()
+	fmt.Println(reset)
 }
 
 // Run the general composer update command to check for lock file updates
