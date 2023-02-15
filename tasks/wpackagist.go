@@ -9,10 +9,8 @@ import (
 
 // WPackagist contains a sequential list of tasks run to complete the program
 func WPackagist() {
-	prepare()
 	update()
 	sift("--quiet")
-	push()
 }
 
 // Release adds the previously tested plugins to the composer-prod.json file
@@ -24,16 +22,8 @@ func Release() {
 	f, _ := os.OpenFile(counter, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	f.Write([]byte("\n" + release))
 	defer f.Close()
-	prepare()
 	checkout(relbranch)
 	sift("--no-install")
-	push()
-}
-
-// Errors prints a clolourized error message
-func Errors(message string) {
-	fmt.Println(red, message, halt)
-	fmt.Println(reset)
 }
 
 // Run the general composer update command to check for lock file updates

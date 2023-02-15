@@ -41,20 +41,18 @@ func Premium() {
 	} else if norm.Name+":"+norm.Version == plugin {
 		execute()
 	} else {
-		// fmt.Println("plugin name does not match composer.json entry - program halted")
 		Errors("Plugin name does not match composer.json entry - program halted")
 	}
 }
 
 // A sequential list of tasks run to complete the program
 func execute() {
-	prepare()
+	Prepare()
 	checkout(upbranch)
 	script()
 	jsonWrite()
 	commit()
 	tags()
-	push()
 }
 
 // Read the composer.json file and store the results in the WordPress structure

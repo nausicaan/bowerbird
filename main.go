@@ -21,7 +21,7 @@ func main() {
 	case "-h", "--help":
 		t.HelpMenu()
 	case "-w", "--wpackagist", "-r", "--release":
-		testWR(t.Flag)
+		testWRT(t.Flag)
 	case "-p", "--premium":
 		t.Flag = "-p"
 		testP()
@@ -30,11 +30,13 @@ func main() {
 	default:
 		t.Errors("Bad flag detected -")
 	}
+	t.Push()
 }
 
 // Determine which function to call based on the passed variable.
-func testWR(flag string) {
+func testWRT(flag string) {
 	if t.ArgLength >= 4 {
+		t.Prepare()
 		switch flag {
 		case "-w", "--wpackagist":
 			t.Flag = "-w"

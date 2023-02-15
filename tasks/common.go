@@ -48,6 +48,20 @@ func HelpMenu() {
 	fmt.Println(reset)
 }
 
+// Prepare switches to the desired branch, pull any changes, and run a composer update
+func Prepare() {
+	var branch string
+	if Flag == "-w" {
+		branch = "development"
+	} else if Flag == "-p" && folder[1] == "events-virtual" {
+		branch = "main"
+	} else {
+		branch = "master"
+	}
+	exec.Command("git", "switch", branch).Run()
+	exec.Command("git", "pull").Run()
+}
+
 // Test for the minimum amount of arguments
 func verify() string {
 	var f string
@@ -66,20 +80,6 @@ func assign(p, t string) {
 	folder = strings.Split(number[0], "/")
 }
 
-// Switch to the desired branch, pull any changes, and run a composer update
-func prepare() {
-	var branch string
-	if Flag == "-w" {
-		branch = "development"
-	} else if Flag == "-p" && folder[1] == "events-virtual" {
-		branch = "main"
-	} else {
-		branch = "master"
-	}
-	exec.Command("git", "switch", branch).Run()
-	exec.Command("git", "pull").Run()
-}
-
 // Create an update branch to work from
 func checkout(prefix string) {
 	if Flag == "-r" {
@@ -96,7 +96,7 @@ func commit() {
 }
 
 // Push to the git repository
-func push() {
+func Push() {
 	switch Flag {
 	case "-r":
 		exec.Command("git", "push", "--set-upstream", "origin", relbranch+release).Run()
@@ -105,4 +105,10 @@ func push() {
 	default:
 		exec.Command("git", "push").Run()
 	}
+}
+
+// Errors prints a clolourized error message
+func Errors(message string) {
+	fmt.Println(red, message, halt)
+	fmt.Println(reset)
 }
