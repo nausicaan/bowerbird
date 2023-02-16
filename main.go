@@ -20,11 +20,11 @@ func main() {
 		fmt.Println(yellow+"Bowerbird", green+bv)
 	case "-h", "--help":
 		t.HelpMenu()
-	case "-w", "--wpackagist", "-r", "--release":
-		testWRT(t.Flag)
+	case "-m", "--managed", "-r", "--release":
+		wrt(t.Flag)
 	case "-p", "--premium":
 		t.Flag = "-p"
-		testP()
+		prem()
 	case "--zero":
 		t.Errors("No flag detected -")
 	default:
@@ -34,13 +34,13 @@ func main() {
 }
 
 // Determine which function to call based on the passed variable.
-func testWRT(flag string) {
+func wrt(flag string) {
 	if t.ArgLength >= 4 {
 		t.Prepare()
 		switch flag {
-		case "-w", "--wpackagist":
-			t.Flag = "-w"
-			t.WPackagist()
+		case "-m", "--managed":
+			t.Flag = "-m"
+			t.Managed()
 		case "-r", "--release":
 			t.Flag = "-r"
 			t.Release()
@@ -51,7 +51,7 @@ func testWRT(flag string) {
 }
 
 // Call the Premium function if the required arguments are supplied
-func testP() {
+func prem() {
 	if t.ArgLength < 4 {
 		t.Errors(zero)
 	} else if t.ArgLength > 4 {

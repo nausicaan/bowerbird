@@ -34,24 +34,24 @@ func HelpMenu() {
 	fmt.Println(yellow, "\nUsage:", reset)
 	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
-	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Update")
-	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Updates")
-	fmt.Println(green, " -w, --wpackagist", reset, "	WPackagist Plugin Updates")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
+	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
 	fmt.Println(green, " -v, --version", reset, "	Display App Version")
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
 	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "    bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
-	fmt.Println(green, "    https://github.com/nausicaan/bowerbird.git")
+	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
 	fmt.Println(reset)
 }
 
 // Prepare switches to the desired branch, pull any changes, and run a composer update
 func Prepare() {
 	var branch string
-	if Flag == "-w" {
+	if Flag == "-m" {
 		branch = "development"
 	} else if Flag == "-p" && folder[1] == "events-virtual" {
 		branch = "main"

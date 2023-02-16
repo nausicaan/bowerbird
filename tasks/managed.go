@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-// WPackagist contains a sequential list of tasks run to complete the program
-func WPackagist() {
+// Managed contains a sequential list of tasks run to complete the program
+func Managed() {
 	update()
 	sift("--quiet")
 }
