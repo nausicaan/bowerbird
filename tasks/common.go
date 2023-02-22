@@ -80,10 +80,24 @@ func assign(p, t string) {
 	folder = strings.Split(number[0], "/")
 }
 
+// Check to see if the current release branch already exists locally
+func exists(prefix string) bool {
+	found := false
+	b, _ := exec.Command("git", "branch").Output()
+	if strings.Contains(string(b), prefix+release) {
+		found = true
+	}
+	return found
+}
+
 // Create an update branch to work from
 func checkout(prefix string) {
 	if Flag == "-r" {
-		exec.Command("git", "checkout", "-b", prefix+release).Run()
+		if exists(prefix) {
+			exec.Command("git", "switch", prefix+release).Run()
+		} else {
+			exec.Command("git", "checkout", "-b", prefix+release).Run()
+		}
 	} else {
 		exec.Command("git", "checkout", "-b", prefix+ticket).Run()
 	}

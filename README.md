@@ -45,7 +45,7 @@ bowerbird -p bcgov-plugin/events-virtual:1.13.4 795
 ### WPackagist:
 
 ```console
-bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821
+bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821
 ```
 
 ### Release:
@@ -54,7 +54,7 @@ bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821
 bowerbird -r bcgov-plugin/bcgov-inline-comments:1.9.0 820
 ```
 
-Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
+Flags `-r` and `-m` can accept multiple updates, chain together as many as you like!
 
 ## License
 

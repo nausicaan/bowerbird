@@ -15,15 +15,24 @@ func Managed() {
 
 // Release adds the previously tested plugins to the composer-prod.json file
 func Release() {
+	getRel()
+	writeRel()
+	checkout(relbranch)
+	sift("--no-install")
+}
+
+// Get the current release number from the count.txt file
+func getRel() {
 	byterel, _ := exec.Command("tail", "-n1", counter).Output()
 	intrel, _ := strconv.Atoi(string(byterel))
 	intrel++
 	release = fmt.Sprint(intrel)
+}
+
+func writeRel() {
 	f, _ := os.OpenFile(counter, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	f.Write([]byte("\n" + release))
 	defer f.Close()
-	checkout(relbranch)
-	sift("--no-install")
 }
 
 // Run the general composer update command to check for lock file updates
