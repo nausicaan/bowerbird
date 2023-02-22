@@ -21,20 +21,22 @@ func main() {
 	case "-h", "--help":
 		t.HelpMenu()
 	case "-m", "--managed", "-r", "--release":
-		wrt(t.Flag)
+		wrtest(t.Flag)
 	case "-p", "--premium":
 		t.Flag = "-p"
-		prem()
+		premtest()
 	case "--zero":
 		t.Errors("No flag detected -")
+		t.HelpMenu()
 	default:
 		t.Errors("Bad flag detected -")
+		t.HelpMenu()
 	}
 	t.Push()
 }
 
 // Determine which function to call based on the passed variable.
-func wrt(flag string) {
+func wrtest(flag string) {
 	if t.ArgLength >= 4 {
 		t.Prepare()
 		switch flag {
@@ -47,15 +49,18 @@ func wrt(flag string) {
 		}
 	} else {
 		t.Errors(zero)
+		t.HelpMenu()
 	}
 }
 
 // Call the Premium function if the required arguments are supplied
-func prem() {
+func premtest() {
 	if t.ArgLength < 4 {
 		t.Errors(zero)
+		t.HelpMenu()
 	} else if t.ArgLength > 4 {
 		t.Errors("Too many arguments supplied -")
+		t.HelpMenu()
 	} else {
 		t.Prepare()
 		t.Premium()

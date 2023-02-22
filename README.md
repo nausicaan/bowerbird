@@ -36,19 +36,19 @@ Navigate to the folder containing your ***composer.json*** file and run:
 
 Currently there are three supported scenarios available, using flags to specify each.
 
-### Premium:
+### Premium (Purchased third party plugins):
 
 ```console
 bowerbird -p bcgov-plugin/events-virtual:1.13.4 795
 ```
 
-### WPackagist:
+### Managed (Plugins currently available via WPackagist or Satis):
 
 ```console
 bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821
 ```
 
-### Release:
+### Release (In-house Production ready content):
 
 ```console
 bowerbird -r bcgov-plugin/bcgov-inline-comments:1.9.0 820
