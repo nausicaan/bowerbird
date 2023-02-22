@@ -45,9 +45,15 @@ func Premium() {
 	}
 }
 
+// Split the supplied arguments and assign them to variables
+func assign(p, t string) {
+	plugin, ticket = p, t
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
+}
+
 // A sequential list of tasks run to complete the program
 func execute() {
-	Prepare()
 	checkout(upbranch)
 	script()
 	jsonWrite()

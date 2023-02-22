@@ -57,6 +57,7 @@ func prem() {
 	} else if t.ArgLength > 4 {
 		t.Errors("Too many arguments supplied -")
 	} else {
+		t.Prepare()
 		t.Premium()
 	}
 }

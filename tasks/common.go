@@ -73,13 +73,6 @@ func verify() string {
 	return f
 }
 
-// Split the supplied arguments and assign them to variables
-func assign(p, t string) {
-	plugin, ticket = p, t
-	number = strings.Split(plugin, ":")
-	folder = strings.Split(number[0], "/")
-}
-
 // Check to see if the current release branch already exists locally
 func exists(prefix string) bool {
 	found := false
@@ -90,7 +83,7 @@ func exists(prefix string) bool {
 	return found
 }
 
-// Create an update branch to work from
+// Deceide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
 	if Flag == "-r" {
 		if exists(prefix) {
