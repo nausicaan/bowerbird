@@ -1,6 +1,7 @@
 package tasks
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -22,7 +23,8 @@ var (
 	norm Satis
 	odd  Event
 	// Flag holds the type argument
-	Flag = verify()
+	Flag   = verify()
+	reader = bufio.NewReader(os.Stdin)
 	// ArgLength measures the number of total arguments
 	ArgLength               = len(os.Args)
 	number, folder          []string
@@ -60,6 +62,14 @@ func Prepare() {
 	}
 	exec.Command("git", "switch", branch).Run()
 	exec.Command("git", "pull").Run()
+}
+
+// The getInput function takes a string prompt and asks the user for input.
+func prompt(prompt string) string {
+	fmt.Print("\n ", prompt)
+	answer, _ := reader.ReadString('\n')
+	answer = strings.TrimSpace(answer)
+	return answer
 }
 
 // Test for the minimum amount of arguments

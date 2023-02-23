@@ -54,6 +54,7 @@ func assign(p, t string) {
 
 // A sequential list of tasks run to complete the program
 func execute() {
+	Prepare()
 	checkout(upbranch)
 	script()
 	jsonWrite()

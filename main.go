@@ -62,7 +62,6 @@ func premtest() {
 		t.Errors("Too many arguments supplied -")
 		t.HelpMenu()
 	} else {
-		t.Prepare()
 		t.Premium()
 	}
 }
