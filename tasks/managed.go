@@ -2,13 +2,13 @@ package tasks
 
 import (
 	"os"
-	"os/exec"
 )
 
 // Managed contains a sequential list of tasks run to complete the program
 func Managed() {
 	update()
 	sift("--quiet")
+	// Push()
 }
 
 // Release adds the previously tested plugins to the composer-prod.json file
@@ -16,16 +16,23 @@ func Release() {
 	release = prompt("Enter the current release number: ")
 	checkout(relbranch)
 	sift("--no-install")
+	// Push()
 }
 
 // Run the general composer update command to check for lock file updates
 func update() {
-	exec.Command("composer", "update").Run()
+	console("composer", "update")
+	// exec.Command("composer", "update").Run()
 }
 
 // Run the appropriate composer require command
 func require(option string) {
-	exec.Command("composer", "require", plugin, option).Run()
+	if Flag == "-r" {
+		console("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, option)
+	} else {
+		console("composer", "require", plugin, option)
+		// exec.Command("composer", "require", plugin, option).Run()
+	}
 }
 
 // Iterate through the Args array and assign plugin and ticket values

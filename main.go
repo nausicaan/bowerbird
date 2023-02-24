@@ -7,6 +7,7 @@ import (
 )
 
 const (
+	reset  string = "\033[0m"
 	bv     string = "1.0.1"
 	green  string = "\033[32m"
 	yellow string = "\033[33m"
@@ -18,6 +19,7 @@ func main() {
 	switch t.Flag {
 	case "-v", "--version":
 		fmt.Println(yellow+"Bowerbird", green+bv)
+		fmt.Println(reset)
 	case "-h", "--help":
 		t.HelpMenu()
 	case "-m", "--managed", "-r", "--release":
@@ -32,7 +34,6 @@ func main() {
 		t.Errors("Bad flag detected -")
 		t.HelpMenu()
 	}
-	t.Push()
 }
 
 // Determine which function to call based on the passed variable.
