@@ -28,6 +28,17 @@ type Event struct {
 	} `json:"require"`
 }
 
+// A sequential list of tasks run to complete the program
+func execute() {
+	Prepare()
+	checkout(upbranch)
+	script()
+	jsonWrite()
+	commit()
+	tags()
+	push()
+}
+
 // Premium contains a sequential list of tasks to run to complete the program
 func Premium() {
 	jsonParse()
@@ -44,24 +55,6 @@ func Premium() {
 	}
 }
 
-// Split the supplied arguments and assign them to variables
-func assign(p, t string) {
-	plugin, ticket = p, t
-	number = strings.Split(plugin, ":")
-	folder = strings.Split(number[0], "/")
-}
-
-// A sequential list of tasks run to complete the program
-func execute() {
-	Prepare()
-	checkout(upbranch)
-	script()
-	jsonWrite()
-	commit()
-	tags()
-	Push()
-}
-
 // Read the composer.json file and store the results in the WordPress structure
 func jsonParse() {
 	current, _ := os.Open("composer.json")
@@ -69,6 +62,13 @@ func jsonParse() {
 	defer current.Close()
 	json.Unmarshal(byteValue, &norm)
 	json.Unmarshal(byteValue, &odd)
+}
+
+// Split the supplied arguments and assign them to variables
+func assign(p, t string) {
+	plugin, ticket = p, t
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
 }
 
 // Run the update script

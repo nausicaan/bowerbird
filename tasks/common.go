@@ -17,7 +17,6 @@ const (
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
-	counter   string = "/Users/byron/Documents/programs/count.txt"
 )
 
 var (
@@ -130,14 +129,8 @@ func commit() {
 	console("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
 }
 
-// Errors prints a clolourized error message
-func Errors(message string) {
-	fmt.Println(red, message, halt)
-	fmt.Println(reset)
-}
-
 // Push to the git repository
-func Push() {
+func push() {
 	switch Flag {
 	case "-r":
 		console("git", "push", "--set-upstream", "origin", relbranch+release)
@@ -146,6 +139,12 @@ func Push() {
 	default:
 		console("git", "push")
 	}
+}
+
+// Errors prints a clolourized error message
+func Errors(message string) {
+	fmt.Println(red, message, halt)
+	fmt.Println(reset)
 }
 
 // Tracking provides informational messages about the programs progress
