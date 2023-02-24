@@ -63,8 +63,6 @@ func Prepare() {
 	}
 	console("git", "switch", branch)
 	console("git", "pull")
-	// exec.Command("git", "switch", branch).Run()
-	// exec.Command("git", "pull").Run()
 }
 
 // Takes a string prompt and asks the user for input.
@@ -118,14 +116,11 @@ func checkout(prefix string) {
 	if Flag == "-r" {
 		if exists(prefix) {
 			console("git", "switch", prefix+release)
-			// exec.Command("git", "switch", prefix+release).Run()
 		} else {
 			console("git", "checkout", "-b", prefix+release)
-			// exec.Command("git", "checkout", "-b", prefix+release).Run()
 		}
 	} else {
 		console("git", "checkout", "-b", prefix+ticket)
-		// exec.Command("git", "checkout", "-b", prefix+ticket).Run()
 	}
 }
 
@@ -133,8 +128,6 @@ func checkout(prefix string) {
 func commit() {
 	console("git", "add", ".")
 	console("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
-	// exec.Command("git", "add", ".").Run()
-	// exec.Command("git", "commit", "-m", plugin+" (DESSO-"+ticket+")").Run()
 }
 
 // Errors prints a clolourized error message
@@ -148,13 +141,10 @@ func Push() {
 	switch Flag {
 	case "-r":
 		console("git", "push", "--set-upstream", "origin", relbranch+release)
-		// exec.Command("git", "push", "--set-upstream", "origin", relbranch+release).Run()
 	case "-p":
 		console("git", "push", "--set-upstream", "origin", upbranch+ticket)
-		// exec.Command("git", "push", "--set-upstream", "origin", upbranch+ticket).Run()
 	default:
 		console("git", "push")
-		// exec.Command("git", "push").Run()
 	}
 }
 

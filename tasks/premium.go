@@ -74,7 +74,6 @@ func jsonParse() {
 // Run the update script
 func script() {
 	console("sh", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/")
-	// exec.Command("/bin/bash", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/").Run()
 }
 
 // Convert the WordPress structure back into json and overwrite the composer.json file
@@ -92,6 +91,4 @@ func jsonWrite() {
 func tags() {
 	console("git", "tag", "v"+norm.Version)
 	console("git", "push", "origin", "--tags")
-	// exec.Command("git", "tag", "v"+norm.Version).Run()
-	// exec.Command("git", "push", "origin", "--tags").Run()
 }
