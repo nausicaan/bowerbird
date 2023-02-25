@@ -3,6 +3,7 @@ package tasks
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -16,7 +17,6 @@ const (
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
-	counter   string = "/Users/byron/Documents/programs/count.txt"
 )
 
 var (
@@ -31,8 +31,8 @@ var (
 	plugin, ticket, release string
 )
 
-// HelpMenu prints the help information
-func HelpMenu() {
+// About prints help information for using the program
+func About() {
 	fmt.Println(yellow, "\nUsage:", reset)
 	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
@@ -50,7 +50,7 @@ func HelpMenu() {
 	fmt.Println(reset)
 }
 
-// Prepare switches to the desired branch, pull any changes, and run a composer update
+// Prepare switches to the desired branch, pulls any changes, and runs a composer update
 func Prepare() {
 	var branch string
 	if Flag == "-m" {
@@ -60,19 +60,36 @@ func Prepare() {
 	} else {
 		branch = "master"
 	}
-	exec.Command("git", "switch", branch).Run()
-	exec.Command("git", "pull").Run()
+	execute("git", "switch", branch)
+	execute("git", "pull")
 }
 
-// The getInput function takes a string prompt and asks the user for input.
+// Take a string prompt and ask the user for input
 func prompt(prompt string) string {
-	fmt.Print("\n ", prompt)
+	fmt.Print(prompt)
 	answer, _ := reader.ReadString('\n')
 	answer = strings.TrimSpace(answer)
 	return answer
 }
 
-// Test for the minimum amount of arguments
+// Run standard terminal commands and display the output
+func execute(name string, task ...string) {
+	path, err := exec.LookPath(name)
+	osCmd := exec.Command(path, task...)
+	osCmd.Stdout = os.Stdout
+	osCmd.Stderr = os.Stderr
+	err = osCmd.Run()
+	problem(err)
+}
+
+// Check for errors, halt the program if found, and log the result
+func problem(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Test for the minimum number of arguments
 func verify() string {
 	var f string
 	if ArgLength < 2 {
@@ -93,39 +110,45 @@ func exists(prefix string) bool {
 	return found
 }
 
-// Deceide whether an update or release branch is needed, and make it so
+// Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
 	if Flag == "-r" {
 		if exists(prefix) {
-			exec.Command("git", "switch", prefix+release).Run()
+			execute("git", "switch", prefix+release)
 		} else {
-			exec.Command("git", "checkout", "-b", prefix+release).Run()
+			execute("git", "checkout", "-b", prefix+release)
 		}
 	} else {
-		exec.Command("git", "checkout", "-b", prefix+ticket).Run()
+		execute("git", "checkout", "-b", prefix+ticket)
 	}
 }
 
 // Add and commit the update
 func commit() {
-	exec.Command("git", "add", ".").Run()
-	exec.Command("git", "commit", "-m", plugin+" (DESSO-"+ticket+")").Run()
+	execute("git", "add", ".")
+	execute("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
 }
 
-// Push to the git repository
-func Push() {
+// Push modified content to the git repository
+func push() {
 	switch Flag {
 	case "-r":
-		exec.Command("git", "push", "--set-upstream", "origin", relbranch+release).Run()
+		execute("git", "push", "--set-upstream", "origin", relbranch+release)
 	case "-p":
-		exec.Command("git", "push", "--set-upstream", "origin", upbranch+ticket).Run()
+		execute("git", "push", "--set-upstream", "origin", upbranch+ticket)
 	default:
-		exec.Command("git", "push").Run()
+		execute("git", "push")
 	}
 }
 
-// Errors prints a clolourized error message
+// Errors prints a colourized error message
 func Errors(message string) {
 	fmt.Println(red, message, halt)
 	fmt.Println(reset)
+}
+
+// Tracking provides informational messages about the programs progress
+func Tracking(message string) {
+	fmt.Println(yellow)
+	fmt.Println("**", reset, message, yellow, "**", reset)
 }

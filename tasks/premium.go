@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -29,37 +28,31 @@ type Event struct {
 	} `json:"require"`
 }
 
-// Premium contains a sequential list of tasks to run to complete the program
-func Premium() {
-	jsonParse()
-	assign(os.Args[2], os.Args[3])
-	norm.Version, odd.Version = number[1], number[1]
-	if strings.Contains(folder[1], "event") {
-		if odd.Name+":"+odd.Version == plugin {
-			execute()
-		}
-	} else if norm.Name+":"+norm.Version == plugin {
-		execute()
-	} else {
-		Errors("Plugin name does not match composer.json entry - program halted")
-	}
-}
-
-// Split the supplied arguments and assign them to variables
-func assign(p, t string) {
-	plugin, ticket = p, t
-	number = strings.Split(plugin, ":")
-	folder = strings.Split(number[0], "/")
-}
-
 // A sequential list of tasks run to complete the program
-func execute() {
+func quarterback() {
 	Prepare()
 	checkout(upbranch)
 	script()
 	jsonWrite()
 	commit()
 	tags()
+	push()
+}
+
+// Premium directs the preliminary actions to determine if the program can continue
+func Premium() {
+	jsonParse()
+	assign(os.Args[2], os.Args[3])
+	norm.Version, odd.Version = number[1], number[1]
+	if strings.Contains(folder[1], "event") {
+		if odd.Name+":"+odd.Version == plugin {
+			quarterback()
+		}
+	} else if norm.Name+":"+norm.Version == plugin {
+		quarterback()
+	} else {
+		Errors("Plugin name does not match composer.json entry - program halted")
+	}
 }
 
 // Read the composer.json file and store the results in the WordPress structure
@@ -71,9 +64,16 @@ func jsonParse() {
 	json.Unmarshal(byteValue, &odd)
 }
 
-// Run the update script
+// Split the supplied arguments and assign them to variables
+func assign(p, t string) {
+	plugin, ticket = p, t
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
+}
+
+// Run the update script on downloaded content
 func script() {
-	exec.Command("/bin/bash", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/").Run()
+	execute("sh", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/")
 }
 
 // Convert the WordPress structure back into json and overwrite the composer.json file
@@ -89,6 +89,6 @@ func jsonWrite() {
 
 // Tag the version so Satis can package it
 func tags() {
-	exec.Command("git", "tag", "v"+norm.Version).Run()
-	exec.Command("git", "push", "origin", "--tags").Run()
+	execute("git", "tag", "v"+norm.Version)
+	execute("git", "push", "origin", "--tags")
 }

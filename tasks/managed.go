@@ -2,55 +2,46 @@ package tasks
 
 import (
 	"os"
-	"os/exec"
 )
 
 // Managed contains a sequential list of tasks run to complete the program
 func Managed() {
+	Tracking("Running composer update")
 	update()
-	sift("--quiet")
+	Tracking("Creating commits")
+	sift()
+	push()
 }
 
 // Release adds the previously tested plugins to the composer-prod.json file
 func Release() {
 	release = prompt("Enter the current release number: ")
 	checkout(relbranch)
-	sift("--no-install")
+	sift()
+	push()
 }
 
 // Run the general composer update command to check for lock file updates
 func update() {
-	exec.Command("composer", "update").Run()
+	execute("composer", "update")
 }
 
-// Run the appropriate composer require command
-func require(option string) {
-	exec.Command("composer", "require", plugin, option).Run()
+// Run the appropriate composer require command based on the Flag value
+func require() {
+	if Flag == "-r" {
+		execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "--no-install")
+	} else {
+		execute("composer", "require", plugin)
+	}
 }
 
 // Iterate through the Args array and assign plugin and ticket values
-func sift(option string) {
+func sift() {
 	for i := 2; i < len(os.Args); i++ {
 		plugin = os.Args[i]
 		i++
 		ticket = os.Args[i]
-		require(option)
+		require()
 		commit()
 	}
 }
-
-/*
-// Get the current release number from the count.txt file
-func getRel() {
-	byterel, _ := exec.Command("tail", "-n1", counter).Output()
-	intrel, _ := strconv.Atoi(string(byterel))
-	intrel++
-	release = fmt.Sprint(intrel)
-}
-
-func writeRel() {
-	f, _ := os.OpenFile(counter, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	f.Write([]byte("\n" + release))
-	defer f.Close()
-}
-*/
