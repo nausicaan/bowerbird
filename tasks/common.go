@@ -31,8 +31,8 @@ var (
 	plugin, ticket, release string
 )
 
-// HelpMenu prints the help information
-func HelpMenu() {
+// About prints help information for using the program
+func About() {
 	fmt.Println(yellow, "\nUsage:", reset)
 	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
@@ -50,7 +50,7 @@ func HelpMenu() {
 	fmt.Println(reset)
 }
 
-// Prepare switches to the desired branch, pull any changes, and run a composer update
+// Prepare switches to the desired branch, pulls any changes, and runs a composer update
 func Prepare() {
 	var branch string
 	if Flag == "-m" {
@@ -60,11 +60,11 @@ func Prepare() {
 	} else {
 		branch = "master"
 	}
-	console("git", "switch", branch)
-	console("git", "pull")
+	execute("git", "switch", branch)
+	execute("git", "pull")
 }
 
-// Takes a string prompt and asks the user for input.
+// Take a string prompt and ask the user for input
 func prompt(prompt string) string {
 	fmt.Print(prompt)
 	answer, _ := reader.ReadString('\n')
@@ -72,8 +72,8 @@ func prompt(prompt string) string {
 	return answer
 }
 
-// Runs standard terminal commands and displays the output
-func console(name string, task ...string) {
+// Run standard terminal commands and display the output
+func execute(name string, task ...string) {
 	path, err := exec.LookPath(name)
 	osCmd := exec.Command(path, task...)
 	osCmd.Stdout = os.Stdout
@@ -89,7 +89,7 @@ func problem(err error) {
 	}
 }
 
-// Test for the minimum amount of arguments
+// Test for the minimum number of arguments
 func verify() string {
 	var f string
 	if ArgLength < 2 {
@@ -110,38 +110,38 @@ func exists(prefix string) bool {
 	return found
 }
 
-// Deceide whether an update or release branch is needed, and make it so
+// Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
 	if Flag == "-r" {
 		if exists(prefix) {
-			console("git", "switch", prefix+release)
+			execute("git", "switch", prefix+release)
 		} else {
-			console("git", "checkout", "-b", prefix+release)
+			execute("git", "checkout", "-b", prefix+release)
 		}
 	} else {
-		console("git", "checkout", "-b", prefix+ticket)
+		execute("git", "checkout", "-b", prefix+ticket)
 	}
 }
 
 // Add and commit the update
 func commit() {
-	console("git", "add", ".")
-	console("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
+	execute("git", "add", ".")
+	execute("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
 }
 
-// Push to the git repository
+// Push modified content to the git repository
 func push() {
 	switch Flag {
 	case "-r":
-		console("git", "push", "--set-upstream", "origin", relbranch+release)
+		execute("git", "push", "--set-upstream", "origin", relbranch+release)
 	case "-p":
-		console("git", "push", "--set-upstream", "origin", upbranch+ticket)
+		execute("git", "push", "--set-upstream", "origin", upbranch+ticket)
 	default:
-		console("git", "push")
+		execute("git", "push")
 	}
 }
 
-// Errors prints a clolourized error message
+// Errors prints a colourized error message
 func Errors(message string) {
 	fmt.Println(red, message, halt)
 	fmt.Println(reset)

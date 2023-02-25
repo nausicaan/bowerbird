@@ -14,14 +14,14 @@ const (
 	zero   string = "Insufficient arguments supplied -"
 )
 
-// Launch the program and execute the selected program abilities
+// Launch the program and execute the appropriate code
 func main() {
 	switch t.Flag {
 	case "-v", "--version":
 		fmt.Println(yellow+"Bowerbird", green+bv)
 		fmt.Println(reset)
 	case "-h", "--help":
-		t.HelpMenu()
+		t.About()
 	case "-m", "--managed", "-r", "--release":
 		wrtest(t.Flag)
 	case "-p", "--premium":
@@ -29,14 +29,14 @@ func main() {
 		premtest()
 	case "--zero":
 		t.Errors("No flag detected -")
-		t.HelpMenu()
+		t.About()
 	default:
 		t.Errors("Bad flag detected -")
-		t.HelpMenu()
+		t.About()
 	}
 }
 
-// Determine which function to call based on the passed variable.
+// Determine which function to call based on the passed variable
 func wrtest(flag string) {
 	if t.ArgLength >= 4 {
 		t.Prepare()
@@ -50,7 +50,7 @@ func wrtest(flag string) {
 		}
 	} else {
 		t.Errors(zero)
-		t.HelpMenu()
+		t.About()
 	}
 }
 
@@ -58,10 +58,10 @@ func wrtest(flag string) {
 func premtest() {
 	if t.ArgLength < 4 {
 		t.Errors(zero)
-		t.HelpMenu()
+		t.About()
 	} else if t.ArgLength > 4 {
 		t.Errors("Too many arguments supplied -")
-		t.HelpMenu()
+		t.About()
 	} else {
 		t.Premium()
 	}

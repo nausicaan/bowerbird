@@ -23,15 +23,15 @@ func Release() {
 
 // Run the general composer update command to check for lock file updates
 func update() {
-	console("composer", "update")
+	execute("composer", "update")
 }
 
-// Run the appropriate composer require command
+// Run the appropriate composer require command based on the Flag value
 func require() {
 	if Flag == "-r" {
-		console("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "--no-install")
+		execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "--no-install")
 	} else {
-		console("composer", "require", plugin)
+		execute("composer", "require", plugin)
 	}
 }
 

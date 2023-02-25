@@ -29,7 +29,7 @@ type Event struct {
 }
 
 // A sequential list of tasks run to complete the program
-func execute() {
+func quarterback() {
 	Prepare()
 	checkout(upbranch)
 	script()
@@ -39,17 +39,17 @@ func execute() {
 	push()
 }
 
-// Premium contains a sequential list of tasks to run to complete the program
+// Premium directs the preliminary actions to determine if the program can continue
 func Premium() {
 	jsonParse()
 	assign(os.Args[2], os.Args[3])
 	norm.Version, odd.Version = number[1], number[1]
 	if strings.Contains(folder[1], "event") {
 		if odd.Name+":"+odd.Version == plugin {
-			execute()
+			quarterback()
 		}
 	} else if norm.Name+":"+norm.Version == plugin {
-		execute()
+		quarterback()
 	} else {
 		Errors("Plugin name does not match composer.json entry - program halted")
 	}
@@ -71,9 +71,9 @@ func assign(p, t string) {
 	folder = strings.Split(number[0], "/")
 }
 
-// Run the update script
+// Run the update script on downloaded content
 func script() {
-	console("sh", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/")
+	execute("sh", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/")
 }
 
 // Convert the WordPress structure back into json and overwrite the composer.json file
@@ -89,6 +89,6 @@ func jsonWrite() {
 
 // Tag the version so Satis can package it
 func tags() {
-	console("git", "tag", "v"+norm.Version)
-	console("git", "push", "origin", "--tags")
+	execute("git", "tag", "v"+norm.Version)
+	execute("git", "push", "origin", "--tags")
 }
