@@ -32,16 +32,18 @@ type Event struct {
 func quarterback() {
 	Prepare()
 	checkout(upbranch)
+	tracking("Running update script")
 	script()
-	jsonWrite()
+	correct()
 	commit()
+	tracking("Pushing tags to Satis")
 	tags()
 	push()
 }
 
 // Premium directs the preliminary actions to determine if the program can continue
 func Premium() {
-	jsonParse()
+	learn()
 	assign(os.Args[2], os.Args[3])
 	norm.Version, odd.Version = number[1], number[1]
 	if strings.Contains(folder[1], "event") {
@@ -51,12 +53,12 @@ func Premium() {
 	} else if norm.Name+":"+norm.Version == plugin {
 		quarterback()
 	} else {
-		Errors("Plugin name does not match composer.json entry - program halted")
+		Alert("Plugin name does not match composer.json entry - program halted")
 	}
 }
 
-// Read the composer.json file and store the results in the WordPress structure
-func jsonParse() {
+// Read the composer.json file and store the results in a structure
+func learn() {
 	current, _ := os.Open("composer.json")
 	byteValue, _ := io.ReadAll(current)
 	defer current.Close()
@@ -76,8 +78,8 @@ func script() {
 	execute("sh", "-c", "scripts/update.sh ~/Downloads/"+folder[1]+"/")
 }
 
-// Convert the WordPress structure back into json and overwrite the composer.json file
-func jsonWrite() {
+// Convert the structure back into json and overwrite the composer.json file
+func correct() {
 	var updated []byte
 	if strings.Contains(odd.Name, "event") {
 		updated, _ = json.MarshalIndent(odd, "", "    ")

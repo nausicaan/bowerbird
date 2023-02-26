@@ -21,18 +21,18 @@ func main() {
 		fmt.Println(yellow+"Bowerbird", green+bv)
 		fmt.Println(reset)
 	case "-h", "--help":
-		t.About()
+		about()
 	case "-m", "--managed", "-r", "--release":
 		wrtest(t.Flag)
 	case "-p", "--premium":
 		t.Flag = "-p"
 		premtest()
 	case "--zero":
-		t.Errors("No flag detected -")
-		t.About()
+		t.Alert("No flag detected -")
+		about()
 	default:
-		t.Errors("Bad flag detected -")
-		t.About()
+		t.Alert("Bad flag detected -")
+		about()
 	}
 }
 
@@ -49,20 +49,39 @@ func wrtest(flag string) {
 			t.Release()
 		}
 	} else {
-		t.Errors(zero)
-		t.About()
+		t.Alert(zero)
+		about()
 	}
 }
 
 // Call the Premium function if the required arguments are supplied
 func premtest() {
 	if t.ArgLength < 4 {
-		t.Errors(zero)
-		t.About()
+		t.Alert(zero)
+		about()
 	} else if t.ArgLength > 4 {
-		t.Errors("Too many arguments supplied -")
-		t.About()
+		t.Alert("Too many arguments supplied -")
+		about()
 	} else {
 		t.Premium()
 	}
+}
+
+// about prints help information for using the program
+func about() {
+	fmt.Println(yellow, "\nUsage:", reset)
+	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
+	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
+	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
+	fmt.Println(green, " -v, --version", reset, "	Display App Version")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(yellow, "\nExample:", reset)
+	fmt.Println("  Against your composer.json file, run:")
+	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  For more information go to:")
+	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
+	fmt.Println(reset)
 }
