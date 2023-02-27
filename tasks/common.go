@@ -33,6 +33,7 @@ var (
 
 // Prepare switches to the desired branch, and pulls any changes
 func Prepare() {
+	tracking("Preparing Branch")
 	var branch string
 	if Flag == "-m" {
 		branch = "development"

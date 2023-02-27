@@ -32,12 +32,13 @@ type Event struct {
 func quarterback() {
 	Prepare()
 	checkout(upbranch)
-	tracking("Running update script")
+	tracking("Update Script")
 	script()
 	correct()
 	commit()
-	tracking("Pushing tags to Satis")
+	tracking("Tagging to Satis")
 	tags()
+	tracking("Git Push")
 	push()
 }
 
