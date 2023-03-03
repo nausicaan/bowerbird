@@ -31,27 +31,9 @@ var (
 	plugin, ticket, release string
 )
 
-// About prints help information for using the program
-func About() {
-	fmt.Println(yellow, "\nUsage:", reset)
-	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
-	fmt.Println(yellow, "\nOptions:")
-	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
-	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
-	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
-	fmt.Println(green, " -v, --version", reset, "	Display App Version")
-	fmt.Println(green, " -h, --help", reset, "		Help Information")
-	fmt.Println(yellow, "\nExample:", reset)
-	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
-	fmt.Println(yellow, "\nHelp:", reset)
-	fmt.Println("  For more information go to:")
-	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
-	fmt.Println(reset)
-}
-
-// Prepare switches to the desired branch, pulls any changes, and runs a composer update
+// Prepare switches to the desired branch, and pulls any changes
 func Prepare() {
+	tracking("Preparing Branch")
 	var branch string
 	if Flag == "-m" {
 		branch = "development"
@@ -68,8 +50,8 @@ func Prepare() {
 func prompt(prompt string) string {
 	fmt.Print(prompt)
 	answer, _ := reader.ReadString('\n')
-	answer = strings.TrimSpace(answer)
-	return answer
+	// answer = strings.TrimSpace(answer)
+	return strings.TrimSpace(answer)
 }
 
 // Run standard terminal commands and display the output
@@ -141,14 +123,14 @@ func push() {
 	}
 }
 
-// Errors prints a colourized error message
-func Errors(message string) {
+// Alert prints a colourized error message
+func Alert(message string) {
 	fmt.Println(red, message, halt)
 	fmt.Println(reset)
 }
 
-// Tracking provides informational messages about the programs progress
-func Tracking(message string) {
+// Provide informational messages about the programs progress
+func tracking(message string) {
 	fmt.Println(yellow)
 	fmt.Println("**", reset, message, yellow, "**", reset)
 }

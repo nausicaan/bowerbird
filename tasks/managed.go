@@ -6,10 +6,11 @@ import (
 
 // Managed contains a sequential list of tasks run to complete the program
 func Managed() {
-	Tracking("Running composer update")
+	tracking("Composer Update")
 	update()
-	Tracking("Creating commits")
+	tracking("Plugin Update")
 	sift()
+	tracking("Git Push")
 	push()
 }
 
@@ -17,7 +18,9 @@ func Managed() {
 func Release() {
 	release = prompt("Enter the current release number: ")
 	checkout(relbranch)
+	tracking("Plugin Update")
 	sift()
+	tracking("Git Push")
 	push()
 }
 
