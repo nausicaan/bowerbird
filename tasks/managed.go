@@ -16,7 +16,7 @@ func Managed() {
 
 // Release adds the previously tested plugins to the composer-prod.json file
 func Release() {
-	release = prompt("Enter the current release number: ")
+	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
 	tracking("Plugin Update")
 	sift()

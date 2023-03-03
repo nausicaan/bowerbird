@@ -47,10 +47,9 @@ func Prepare() {
 }
 
 // Take a string prompt and ask the user for input
-func prompt(prompt string) string {
+func solicit(prompt string) string {
 	fmt.Print(prompt)
 	answer, _ := reader.ReadString('\n')
-	// answer = strings.TrimSpace(answer)
 	return strings.TrimSpace(answer)
 }
 
