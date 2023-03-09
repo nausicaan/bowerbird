@@ -34,7 +34,7 @@ var (
 func Prepare() {
 	tracking("Preparing Branch")
 	var branch string
-	if folder[1] == "events-virtual" {
+	if Flag == "-p" && folder[1] == "events-virtual" {
 		branch = "main"
 	} else if Flag == "-p" {
 		branch = "master"
