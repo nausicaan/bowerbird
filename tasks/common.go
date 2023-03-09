@@ -3,7 +3,6 @@ package tasks
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -35,22 +34,22 @@ var (
 func Prepare() {
 	tracking("Preparing Branch")
 	var branch string
-	if Flag == "-m" {
-		branch = "development"
-	} else if Flag == "-p" && folder[1] == "events-virtual" {
+	if folder[1] == "events-virtual" {
 		branch = "main"
-	} else {
+	} else if Flag == "-p" {
 		branch = "master"
+	} else {
+		branch = "development"
 	}
 	execute("git", "switch", branch)
 	execute("git", "pull")
 }
 
-// Take a string prompt and ask the user for input
+// Get user input via screen prompt
 func solicit(prompt string) string {
 	fmt.Print(prompt)
-	answer, _ := reader.ReadString('\n')
-	return strings.TrimSpace(answer)
+	response, _ := reader.ReadString('\n')
+	return strings.TrimSpace(response)
 }
 
 // Run standard terminal commands and display the output
@@ -63,10 +62,11 @@ func execute(name string, task ...string) {
 	problem(err)
 }
 
-// Check for errors, halt the program if found, and log the result
+// Check for errors, print the result if found
 func problem(err error) {
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 }
 
@@ -128,7 +128,7 @@ func Alert(message string) {
 	fmt.Println(reset)
 }
 
-// Provide informational messages about the programs progress
+// Provide and highlight informational messages
 func tracking(message string) {
 	fmt.Println(yellow)
 	fmt.Println("**", reset, message, yellow, "**", reset)
