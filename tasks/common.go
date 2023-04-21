@@ -91,6 +91,14 @@ func exists(prefix string) bool {
 	return found
 }
 
+func edge() bool {
+	found := false
+	if strings.Contains(plugin, "roots/wordpress") {
+		found = true
+	}
+	return found
+}
+
 // Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
 	if Flag == "-r" {

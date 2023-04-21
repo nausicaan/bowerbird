@@ -7,7 +7,7 @@ import (
 // Managed contains a sequential list of tasks run to complete the program
 func Managed() {
 	tracking("Composer Update")
-	update()
+	execute("composer", "update")
 	tracking("Plugin Update")
 	sift()
 	tracking("Git Push")
@@ -25,16 +25,24 @@ func Release() {
 }
 
 // Run the general composer update command to check for lock file updates
-func update() {
-	execute("composer", "update")
-}
+// func update() {
+// 	execute("composer", "update")
+// }
 
 // Run the appropriate composer require command based on the Flag value
 func require() {
 	if Flag == "-r" {
-		execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "--no-install")
+		if edge() {
+			execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "-W", "--no-install")
+		} else {
+			execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "--no-install")
+		}
 	} else {
-		execute("composer", "require", plugin)
+		if edge() {
+			execute("composer", "require", plugin, "-W")
+		} else {
+			execute("composer", "require", plugin)
+		}
 	}
 }
 
