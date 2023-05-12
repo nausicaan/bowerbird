@@ -12,6 +12,7 @@
 *.out
 
 # Dependency directories
+bin/
 logs/
 test/
 vendor/

@@ -91,6 +91,7 @@ func exists(prefix string) bool {
 	return found
 }
 
+// Check for edge cases which require the -W flag
 func edge() bool {
 	found := false
 	if strings.Contains(plugin, "roots/wordpress") {
