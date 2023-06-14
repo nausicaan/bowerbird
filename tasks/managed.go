@@ -24,11 +24,6 @@ func Release() {
 	push()
 }
 
-// Run the general composer update command to check for lock file updates
-// func update() {
-// 	execute("composer", "update")
-// }
-
 // Run the appropriate composer require command based on the Flag value
 func require() {
 	if Flag == "-r" {

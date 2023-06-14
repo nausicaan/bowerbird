@@ -63,11 +63,11 @@ func learn() {
 	current, _ := os.Open("composer.json")
 	byteValue, _ := io.ReadAll(current)
 	err := json.Unmarshal(byteValue, &norm)
-	problem(err)
+	inspect(err)
 	err = json.Unmarshal(byteValue, &odd)
-	problem(err)
+	inspect(err)
 	err = current.Close()
-	problem(err)
+	inspect(err)
 }
 
 // Split the supplied arguments and assign them to variables
@@ -91,7 +91,7 @@ func correct() {
 		updated, _ = json.MarshalIndent(norm, "", "    ")
 	}
 	err := os.WriteFile("composer.json", updated, 0644)
-	problem(err)
+	inspect(err)
 }
 
 // Tag the version so Satis can package it

@@ -59,11 +59,11 @@ func execute(name string, task ...string) {
 	osCmd.Stdout = os.Stdout
 	osCmd.Stderr = os.Stderr
 	err = osCmd.Run()
-	problem(err)
+	inspect(err)
 }
 
 // Check for errors, print the result if found
-func problem(err error) {
+func inspect(err error) {
 	if err != nil {
 		fmt.Println(err)
 		return

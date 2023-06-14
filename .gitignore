@@ -21,6 +21,3 @@ vendor/
 .DS_Store
 Thumbs.db
 .idea
-
-# Standalone files
-local.go
