@@ -12,9 +12,6 @@ type Satis struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
-	Require struct {
-		ComposerInstallers string `json:"composer/installers"`
-	} `json:"require"`
 }
 
 // Event structure to hold the contents of the composer.json file
@@ -23,8 +20,7 @@ type Event struct {
 	Version string `json:"version"`
 	Type    string `json:"type"`
 	Require struct {
-		ComposerInstallers                string `json:"composer/installers"`
-		WpackagistPluginTheEventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
+		EventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
 	} `json:"require"`
 }
 

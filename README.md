@@ -2,7 +2,7 @@
 
 Bowerbird is a WordPress plugin update install tool. It simplifies the process of pulling free updates from [WordPress Packagist](https://repo.packagist.org) or premium updates from a subscription, then pushing them to Git and adding version tags to a private repository like Satis, if needed. Named after a very industrious creature who excels at building.
 
-![Bird](bowerbird.jpg)
+![Bird](bowerbird.webp)
 
 ## Prerequisites
 

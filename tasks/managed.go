@@ -18,6 +18,8 @@ func Managed() {
 func Release() {
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
+	tracking("Composer Update")
+	execute("composer", "update")
 	tracking("Plugin Update")
 	sift()
 	tracking("Git Push")
