@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	reset  string = "\033[0m"
 	bv     string = "1.0.1"
+	reset  string = "\033[0m"
 	green  string = "\033[32m"
 	yellow string = "\033[33m"
 	zero   string = "Insufficient arguments supplied -"

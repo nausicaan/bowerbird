@@ -53,12 +53,11 @@ func solicit(prompt string) string {
 }
 
 // Run standard terminal commands and display the output
-func execute(name string, task ...string) {
-	path, err := exec.LookPath(name)
-	osCmd := exec.Command(path, task...)
+func execute(task string, args ...string) {
+	osCmd := exec.Command(task, args...)
 	osCmd.Stdout = os.Stdout
 	osCmd.Stderr = os.Stderr
-	err = osCmd.Run()
+	err := osCmd.Run()
 	inspect(err)
 }
 
