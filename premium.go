@@ -1,32 +1,24 @@
-package tasks
+package main
 
 import (
 	"encoding/json"
-	"io"
 	"os"
 	"strings"
 )
 
-// Satis structure to hold the contents of the composer.json file
+// Satis structure holds the contents of the composer.json file
 type Satis struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-	Type    string `json:"type"`
-}
-
-// Event structure to hold the contents of the composer.json file
-type Event struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
 	Require struct {
 		EventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
-	} `json:"require"`
+	} `json:"require,omitempty"`
 }
 
 // A sequential list of tasks run to complete the program
 func quarterback() {
-	Prepare()
+	prepare()
 	checkout(upbranch)
 	tracking("Update Script")
 	script()
@@ -39,30 +31,21 @@ func quarterback() {
 }
 
 // Premium directs the preliminary actions to determine if the program can continue
-func Premium() {
+func premium() {
 	learn()
-	assign(os.Args[2], os.Args[3])
-	norm.Version, odd.Version = number[1], number[1]
-	if strings.Contains(folder[1], "event") {
-		if odd.Name+":"+odd.Version == plugin {
-			quarterback()
-		}
-	} else if norm.Name+":"+norm.Version == plugin {
+	assign(passed[2], passed[3])
+	satis.Version = number[1]
+	if satis.Name+":"+satis.Version == plugin {
 		quarterback()
 	} else {
-		Alert("Plugin name does not match composer.json entry - program halted")
+		alert("Plugin name does not match composer.json entry - program halted")
 	}
 }
 
 // Read the composer.json file and store the results in a structure
 func learn() {
-	current, _ := os.Open("composer.json")
-	byteValue, _ := io.ReadAll(current)
-	err := json.Unmarshal(byteValue, &norm)
-	inspect(err)
-	err = json.Unmarshal(byteValue, &odd)
-	inspect(err)
-	err = current.Close()
+	current, _ := os.ReadFile("composer.json")
+	err := json.Unmarshal(current, &satis)
 	inspect(err)
 }
 
@@ -81,17 +64,12 @@ func script() {
 // Convert the structure back into json and overwrite the composer.json file
 func correct() {
 	var updated []byte
-	if strings.Contains(odd.Name, "event") {
-		updated, _ = json.MarshalIndent(odd, "", "    ")
-	} else {
-		updated, _ = json.MarshalIndent(norm, "", "    ")
-	}
-	err := os.WriteFile("composer.json", updated, 0644)
-	inspect(err)
+	updated, _ = json.MarshalIndent(satis, "", "    ")
+	document("composer.json", updated)
 }
 
 // Tag the version so Satis can package it
 func tags() {
-	execute("git", "tag", "v"+norm.Version)
+	execute("git", "tag", "v"+satis.Version)
 	execute("git", "push", "origin", "--tags")
 }

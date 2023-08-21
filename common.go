@@ -1,4 +1,4 @@
-package tasks
+package main
 
 import (
 	"bufio"
@@ -13,36 +13,40 @@ const (
 	green     string = "\033[32m"
 	yellow    string = "\033[33m"
 	red       string = "\033[41m"
+	bv        string = "2.0"
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
+	zero      string = "Insufficient arguments supplied -"
 )
 
 var (
-	norm Satis
-	odd  Event
-	// Flag holds the type argument
-	Flag   = verify()
-	reader = bufio.NewReader(os.Stdin)
-	// ArgLength measures the number of total arguments
-	ArgLength               = len(os.Args)
+	satis                   Satis
+	flag                    = verify()
+	reader                  = bufio.NewReader(os.Stdin)
+	passed                  = os.Args
+	inputs                  = len(passed)
 	number, folder          []string
 	plugin, ticket, release string
 )
 
-// Prepare switches to the desired branch, and pulls any changes
-func Prepare() {
+// Switch to the desired branch, and pull any changes
+func prepare() {
 	tracking("Preparing Branch")
 	var branch string
-	if Flag == "-p" && folder[1] == "events-virtual" {
+	if flag == "-p" && folder[1] == "events-virtual" {
 		branch = "main"
-	} else if Flag == "-p" {
+	} else if flag == "-p" {
 		branch = "master"
 	} else {
 		branch = "development"
 	}
 	execute("git", "switch", branch)
 	execute("git", "pull")
+}
+
+func document(name string, d []byte) {
+	inspect(os.WriteFile(name, d, 0644))
 }
 
 // Get user input via screen prompt
@@ -72,10 +76,10 @@ func inspect(err error) {
 // Test for the minimum number of arguments
 func verify() string {
 	var f string
-	if ArgLength < 2 {
+	if inputs < 2 {
 		f = "--zero"
 	} else {
-		f = os.Args[1]
+		f = passed[1]
 	}
 	return f
 }
@@ -101,7 +105,7 @@ func edge() bool {
 
 // Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
-	if Flag == "-r" {
+	if flag == "-r" {
 		if exists(prefix) {
 			execute("git", "switch", prefix+release)
 		} else {
@@ -120,7 +124,7 @@ func commit() {
 
 // Push modified content to the git repository
 func push() {
-	switch Flag {
+	switch flag {
 	case "-r":
 		execute("git", "push", "--set-upstream", "origin", relbranch+release)
 	case "-p":
@@ -130,14 +134,36 @@ func push() {
 	}
 }
 
-// Alert prints a colourized error message
-func Alert(message string) {
-	fmt.Println(red, message, halt)
-	fmt.Println(reset)
+// Print a colourized error message
+func alert(message string) {
+	fmt.Println(red, message, halt, reset)
 }
 
 // Provide and highlight informational messages
 func tracking(message string) {
 	fmt.Println(yellow)
 	fmt.Println("**", reset, message, yellow, "**", reset)
+}
+
+func version() {
+	fmt.Println(yellow+"Bowerbird", green+bv, reset)
+}
+
+// Print help information for using the program
+func about() {
+	fmt.Println(yellow, "\nUsage:", reset)
+	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
+	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
+	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
+	fmt.Println(green, " -v, --version", reset, "	Display App Version")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(yellow, "\nExample:", reset)
+	fmt.Println("  Against your composer.json file, run:")
+	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  For more information go to:")
+	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
+	fmt.Println(reset)
 }
