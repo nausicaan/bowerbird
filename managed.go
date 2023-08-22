@@ -7,7 +7,7 @@ func managed() {
 	tracking("Plugin Update")
 	sift()
 	tracking("Git Push")
-	// push()
+	push()
 }
 
 // Add the previously tested plugins to the composer-prod.json file
