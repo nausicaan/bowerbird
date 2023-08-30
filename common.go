@@ -21,6 +21,7 @@ const (
 )
 
 var (
+	event                   Event
 	satis                   Satis
 	flag                    = verify()
 	reader                  = bufio.NewReader(os.Stdin)

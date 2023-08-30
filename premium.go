@@ -6,14 +6,21 @@ import (
 	"strings"
 )
 
-// Satis structure holds the contents of the composer.json file
+// Satis structure captures the contents of the composer.json file for typical premium plugins
 type Satis struct {
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	Type    string `json:"type"`
+}
+
+// Event structure captures the contents of the composer.json file for Events Calendar related items
+type Event struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
 	Require struct {
 		EventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
-	} `json:"require,omitempty"`
+	} `json:"require"`
 }
 
 // A sequential list of tasks run to complete the program
@@ -34,8 +41,12 @@ func quarterback() {
 func premium() {
 	learn()
 	assign(passed[2], passed[3])
-	satis.Version = number[1]
-	if satis.Name+":"+satis.Version == plugin {
+	satis.Version, event.Version = number[1], number[1]
+	if strings.Contains(folder[1], "event") {
+		if event.Name+":"+event.Version == plugin {
+			quarterback()
+		}
+	} else if satis.Name+":"+satis.Version == plugin {
 		quarterback()
 	} else {
 		alert("Plugin name does not match composer.json entry - program halted")
@@ -46,6 +57,8 @@ func premium() {
 func learn() {
 	current, _ := os.ReadFile("composer.json")
 	err := json.Unmarshal(current, &satis)
+	inspect(err)
+	err = json.Unmarshal(current, &event)
 	inspect(err)
 }
 
@@ -64,7 +77,11 @@ func script() {
 // Convert the structure back into json and overwrite the composer.json file
 func correct() {
 	var updated []byte
-	updated, _ = json.MarshalIndent(satis, "", "    ")
+	if strings.Contains(event.Name, "event") {
+		updated, _ = json.MarshalIndent(event, "", "    ")
+	} else {
+		updated, _ = json.MarshalIndent(satis, "", "    ")
+	}
 	document("composer.json", updated)
 }
 
