@@ -1,20 +1,19 @@
-package tasks
+package main
 
 import (
 	"encoding/json"
-	"io"
 	"os"
 	"strings"
 )
 
-// Satis structure to hold the contents of the composer.json file
+// Satis structure captures the contents of the composer.json file for typical premium plugins
 type Satis struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 	Type    string `json:"type"`
 }
 
-// Event structure to hold the contents of the composer.json file
+// Event structure captures the contents of the composer.json file for Events Calendar related items
 type Event struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
@@ -26,7 +25,7 @@ type Event struct {
 
 // A sequential list of tasks run to complete the program
 func quarterback() {
-	Prepare()
+	prepare()
 	checkout(upbranch)
 	tracking("Update Script")
 	script()
@@ -39,30 +38,27 @@ func quarterback() {
 }
 
 // Premium directs the preliminary actions to determine if the program can continue
-func Premium() {
+func premium() {
 	learn()
-	assign(os.Args[2], os.Args[3])
-	norm.Version, odd.Version = number[1], number[1]
+	assign(passed[2], passed[3])
+	satis.Version, event.Version = number[1], number[1]
 	if strings.Contains(folder[1], "event") {
-		if odd.Name+":"+odd.Version == plugin {
+		if event.Name+":"+event.Version == plugin {
 			quarterback()
 		}
-	} else if norm.Name+":"+norm.Version == plugin {
+	} else if satis.Name+":"+satis.Version == plugin {
 		quarterback()
 	} else {
-		Alert("Plugin name does not match composer.json entry - program halted")
+		alert("Plugin name does not match composer.json entry - program halted")
 	}
 }
 
 // Read the composer.json file and store the results in a structure
 func learn() {
-	current, _ := os.Open("composer.json")
-	byteValue, _ := io.ReadAll(current)
-	err := json.Unmarshal(byteValue, &norm)
+	current, _ := os.ReadFile("composer.json")
+	err := json.Unmarshal(current, &satis)
 	inspect(err)
-	err = json.Unmarshal(byteValue, &odd)
-	inspect(err)
-	err = current.Close()
+	err = json.Unmarshal(current, &event)
 	inspect(err)
 }
 
@@ -81,17 +77,16 @@ func script() {
 // Convert the structure back into json and overwrite the composer.json file
 func correct() {
 	var updated []byte
-	if strings.Contains(odd.Name, "event") {
-		updated, _ = json.MarshalIndent(odd, "", "    ")
+	if strings.Contains(event.Name, "event") {
+		updated, _ = json.MarshalIndent(event, "", "    ")
 	} else {
-		updated, _ = json.MarshalIndent(norm, "", "    ")
+		updated, _ = json.MarshalIndent(satis, "", "    ")
 	}
-	err := os.WriteFile("composer.json", updated, 0644)
-	inspect(err)
+	document("composer.json", updated)
 }
 
 // Tag the version so Satis can package it
 func tags() {
-	execute("git", "tag", "v"+norm.Version)
+	execute("git", "tag", "v"+satis.Version)
 	execute("git", "push", "origin", "--tags")
 }

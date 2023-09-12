@@ -1,11 +1,7 @@
-package tasks
+package main
 
-import (
-	"os"
-)
-
-// Managed contains a sequential list of tasks run to complete the program
-func Managed() {
+// A sequential list of tasks run to complete the program
+func managed() {
 	tracking("Composer Update")
 	execute("composer", "update")
 	tracking("Plugin Update")
@@ -14,21 +10,16 @@ func Managed() {
 	push()
 }
 
-// Release adds the previously tested plugins to the composer-prod.json file
-func Release() {
+// Add the previously tested plugins to the composer-prod.json file
+func released() {
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
-	tracking("Composer Update")
-	execute("composer", "update")
-	tracking("Plugin Update")
-	sift()
-	tracking("Git Push")
-	push()
+	managed()
 }
 
-// Run the appropriate composer require command based on the Flag value
+// Run the appropriate composer require command based on the flag value
 func require() {
-	if Flag == "-r" {
+	if flag == "-r" {
 		if edge() {
 			execute("env", "COMPOSER=composer-prod.json", "composer", "require", plugin, "-W", "--no-install")
 		} else {
@@ -45,10 +36,10 @@ func require() {
 
 // Iterate through the Args array and assign plugin and ticket values
 func sift() {
-	for i := 2; i < len(os.Args); i++ {
-		plugin = os.Args[i]
+	for i := 2; i < inputs; i++ {
+		plugin = passed[i]
 		i++
-		ticket = os.Args[i]
+		ticket = passed[i]
 		require()
 		commit()
 	}
