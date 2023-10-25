@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -30,6 +31,16 @@ var (
 	number, folder          []string
 	plugin, ticket, release string
 )
+
+func doublecheck() {
+	var filePath string = "composer-prod.json"
+
+	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
+		alert("This is not the correct folder,")
+		os.Exit(0)
+
+	}
+}
 
 // Switch to the desired branch, and pull any changes
 func prepare() {

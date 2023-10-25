@@ -6,9 +6,9 @@ Bowerbird is a WordPress plugin update install tool. It simplifies the process o
 
 ## Prerequisites
 
-- Login information to download the update package. -- ***premium content only*** --
+Login information to download the update package. -- ***premium content only*** --
 
-- Googles' [Go language](https://go.dev) installed to enable building executables from source code.
+Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
 ## Build
 

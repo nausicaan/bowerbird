@@ -2,6 +2,7 @@ package main
 
 // Launch the program and execute the appropriate code
 func main() {
+	doublecheck()
 	switch flag {
 	case "-v", "--version":
 		version()
