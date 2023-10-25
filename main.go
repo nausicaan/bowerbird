@@ -2,7 +2,6 @@ package main
 
 // Launch the program and execute the appropriate code
 func main() {
-	doublecheck()
 	switch flag {
 	case "-v", "--version":
 		version()
@@ -24,6 +23,7 @@ func main() {
 
 // Determine which function to call based on the passed variable
 func mrtest(flag string) {
+	doublecheck()
 	if inputs >= 4 {
 		prepare()
 		switch flag {

@@ -38,7 +38,6 @@ func doublecheck() {
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 		alert("This is not the correct folder,")
 		os.Exit(0)
-
 	}
 }
 
