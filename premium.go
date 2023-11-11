@@ -32,16 +32,19 @@ func quarterback() {
 	correct()
 	commit()
 	tracking("Tagging to Satis")
-	tags()
-	tracking("Git Push")
-	push()
+	// tags()
+	// tracking("Git Push")
+	// push()
 }
 
 // Premium directs the preliminary actions to determine if the program can continue
 func premium() {
-	learn()
-	assign(passed[2], passed[3])
+	plugin, ticket = updates[0], updates[1]
+	assign()
+	os.Chdir(hmdr + "/Documents/bitbucket/" + folder[1])
+	serialize()
 	satis.Version, event.Version = number[1], number[1]
+
 	if strings.Contains(folder[1], "event") {
 		if event.Name+":"+event.Version == plugin {
 			quarterback()
@@ -49,12 +52,12 @@ func premium() {
 	} else if satis.Name+":"+satis.Version == plugin {
 		quarterback()
 	} else {
-		alert("Plugin name does not match composer.json entry - program halted")
+		alert("Plugin name does not match composer.json entry -")
 	}
 }
 
 // Read the composer.json file and store the results in a structure
-func learn() {
+func serialize() {
 	current, _ := os.ReadFile("composer.json")
 	err := json.Unmarshal(current, &satis)
 	inspect(err)
@@ -63,8 +66,7 @@ func learn() {
 }
 
 // Split the supplied arguments and assign them to variables
-func assign(p, t string) {
-	plugin, ticket = p, t
+func assign() {
 	number = strings.Split(plugin, ":")
 	folder = strings.Split(number[0], "/")
 }

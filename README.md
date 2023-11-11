@@ -6,9 +6,11 @@ Bowerbird is a WordPress plugin update install tool. It simplifies the process o
 
 ## Prerequisites
 
-Login information to download the update package. -- ***premium content only*** --
+- Login information to download the update package. -- ***premium content only*** --
 
-Googles' [Go language](https://go.dev) installed to enable building executables from source code.
+- Googles' [Go language](https://go.dev) installed to enable building executables from source code.
+
+- An *interactions* folder in `~/Documents/` shared between [Silkworm](https://github.com/nausicaan/bowerbird.git) and Bowerbird.
 
 ## Build
 
@@ -41,19 +43,19 @@ Currently there are three supported scenarios available, using flags to specify 
 ### Premium (Purchased third party plugins):
 
 ``` console
-bowerbird -p bcgov-plugin/events-virtual:1.13.4 795
+bowerbird -p
 ```
 
 ### Managed (Plugins currently available via WPackagist or Satis):
 
 ``` console
-bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821
+bowerbird -m
 ```
 
 ### Release (In-house Production ready content):
 
 ``` console
-bowerbird -r bcgov-plugin/bcgov-inline-comments:1.9.0 820
+bowerbird -r
 ```
 
 Flags `-r` and `-m` can accept multiple updates, chain together as many as you like!

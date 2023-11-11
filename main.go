@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"os"
+)
+
 // Launch the program and execute the appropriate code
 func main() {
 	switch flag {
@@ -8,47 +13,72 @@ func main() {
 	case "-h", "--help":
 		about()
 	case "-m", "--managed", "-r", "--release":
-		mrtest(flag)
+		os.Chdir(hmdr + "/Documents/bitbucket/blog_gov_bc_ca")
+		doublecheck()
+		flagtest(flag)
 	case "-p", "--premium":
 		flag = "-p"
-		premtest()
+		files := ls(hmdr + "/Documents/interactions/premium")
+		for _, file := range files {
+			discovery(hmdr + "/Documents/interactions/premium/" + file)
+			premium()
+		}
 	case "--zero":
+		about()
 		alert("No flag detected -")
-		about()
 	default:
-		alert("Bad flag detected -")
 		about()
+		alert("Bad flag detected -")
 	}
 }
 
 // Determine which function to call based on the passed variable
-func mrtest(flag string) {
-	doublecheck()
-	if inputs >= 4 {
-		prepare()
-		switch flag {
-		case "-m", "--managed":
-			flag = "-m"
-			managed()
-		case "-r", "--release":
-			flag = "-r"
-			released()
-		}
-	} else {
-		alert(zero)
-		about()
+func flagtest(flag string) {
+	prepare()
+	switch flag {
+	case "-m", "--managed":
+		flag = "-m"
+		discovery(hmdr + "/Documents/interactions/managed.txt")
+		managed()
+	case "-r", "--release":
+		flag = "-r"
+		discovery(hmdr + "/Documents/interactions/release.txt")
+		released()
 	}
 }
 
-// Call the Premium function if the required arguments are supplied
-func premtest() {
-	if inputs < 4 {
-		alert(zero)
-		about()
-	} else if inputs > 4 {
-		alert("Too many arguments supplied -")
-		about()
-	} else {
-		premium()
-	}
+// Print a colourized error message
+func alert(message string) {
+	fmt.Println(red, message, halt, reset)
+	os.Exit(0)
+}
+
+// Provide and highlight informational messages
+func tracking(message string) {
+	fmt.Println(yellow)
+	fmt.Println("**", reset, message, yellow, "**", reset)
+}
+
+// Print the build version of the program
+func version() {
+	fmt.Println(yellow+"Bowerbird", green+bv, reset)
+}
+
+// Print help information for using the program
+func about() {
+	fmt.Println(yellow, "\nUsage:", reset)
+	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
+	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
+	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
+	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
+	fmt.Println(green, " -v, --version", reset, "	Display App Version")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(yellow, "\nExample:", reset)
+	fmt.Println("  Against your composer.json file, run:")
+	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(yellow, "\nHelp:", reset)
+	fmt.Println("  For more information go to:")
+	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
+	fmt.Println(reset)
 }

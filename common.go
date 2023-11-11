@@ -10,34 +10,74 @@ import (
 )
 
 const (
+	bv        string = "2.1"
 	reset     string = "\033[0m"
 	green     string = "\033[32m"
 	yellow    string = "\033[33m"
 	red       string = "\033[41m"
-	bv        string = "2.0"
+	upbranch  string = "update/"
 	relbranch string = "release/"
-	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
 	zero      string = "Insufficient arguments supplied -"
 )
 
 var (
-	event                   Event
-	satis                   Satis
-	flag                    = verify()
-	reader                  = bufio.NewReader(os.Stdin)
-	passed                  = os.Args
-	inputs                  = len(passed)
-	number, folder          []string
-	plugin, ticket, release string
+	inputs  int
+	event   Event
+	satis   Satis
+	plugin  string
+	ticket  string
+	release string
+	number  []string
+	folder  []string
+	updates []string
+	flag    = os.Args[1]
+	hmdr, _ = os.UserHomeDir()
+	reader  = bufio.NewReader(os.Stdin)
+	gitpath = hmdr + "/Documents/github/silkworm/"
 )
 
+func discovery(filepath string) {
+	goals := read(filepath)
+	updates = strings.Split(string(goals), " ")
+	updates = updates[:len(updates)-1]
+	inputs = len(updates)
+}
+
+// Read any file and return the contents as a byte variable
+func read(file string) []byte {
+	outcome, problem := os.ReadFile(file)
+	inspect(problem)
+	return outcome
+}
+
+// Record a list of files in a folder
+func ls(folder string) []string {
+	var content []string
+	dir := expose(folder)
+
+	files, err := dir.ReadDir(0)
+	inspect(err)
+
+	for _, f := range files {
+		content = append(content, f.Name())
+	}
+	return content
+}
+
+// Open a file for reading and return an os.File variable
+func expose(file string) *os.File {
+	outcome, err := os.Open(file)
+	inspect(err)
+	return outcome
+}
+
+// Confirm the current working directory is correct
 func doublecheck() {
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 		alert("This is not the correct folder,")
-		os.Exit(0)
 	}
 }
 
@@ -45,6 +85,7 @@ func doublecheck() {
 func prepare() {
 	tracking("Preparing Branch")
 	var branch string
+
 	if flag == "-p" && folder[1] == "events-virtual" {
 		branch = "main"
 	} else if flag == "-p" {
@@ -56,6 +97,7 @@ func prepare() {
 	execute("git", "pull")
 }
 
+// Write a passed variable to a named file
 func document(name string, d []byte) {
 	inspect(os.WriteFile(name, d, 0644))
 }
@@ -85,15 +127,15 @@ func inspect(err error) {
 }
 
 // Test for the minimum number of arguments
-func verify() string {
-	var f string
-	if inputs < 2 {
-		f = "--zero"
-	} else {
-		f = passed[1]
-	}
-	return f
-}
+// func verify() string {
+// 	var f string
+// 	if inputs < 2 {
+// 		f = "--zero"
+// 	} else {
+// 		f = updates[1]
+// 	}
+// 	return f
+// }
 
 // Check to see if the current release branch already exists locally
 func exists(prefix string) bool {
@@ -114,7 +156,7 @@ func edge() bool {
 	return found
 }
 
-// Decide whether an update or release branch is needed, and make it so
+// Checkout an update or release branch
 func checkout(prefix string) {
 	if flag == "-r" {
 		if exists(prefix) {
@@ -127,13 +169,13 @@ func checkout(prefix string) {
 	}
 }
 
-// Add and commit the update
+// Add and Commit the update
 func commit() {
 	execute("git", "add", ".")
-	execute("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
+	execute("git", "commit", "-m", plugin+" ("+ticket+")")
 }
 
-// Push modified content to the git repository
+// Push modified content to a git repository
 func push() {
 	switch flag {
 	case "-r":
@@ -143,38 +185,4 @@ func push() {
 	default:
 		execute("git", "push")
 	}
-}
-
-// Print a colourized error message
-func alert(message string) {
-	fmt.Println(red, message, halt, reset)
-}
-
-// Provide and highlight informational messages
-func tracking(message string) {
-	fmt.Println(yellow)
-	fmt.Println("**", reset, message, yellow, "**", reset)
-}
-
-func version() {
-	fmt.Println(yellow+"Bowerbird", green+bv, reset)
-}
-
-// Print help information for using the program
-func about() {
-	fmt.Println(yellow, "\nUsage:", reset)
-	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
-	fmt.Println(yellow, "\nOptions:")
-	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
-	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
-	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
-	fmt.Println(green, " -v, --version", reset, "	Display App Version")
-	fmt.Println(green, " -h, --help", reset, "		Help Information")
-	fmt.Println(yellow, "\nExample:", reset)
-	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
-	fmt.Println(yellow, "\nHelp:", reset)
-	fmt.Println("  For more information go to:")
-	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
-	fmt.Println(reset)
 }
