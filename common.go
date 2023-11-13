@@ -126,17 +126,6 @@ func inspect(err error) {
 	}
 }
 
-// Test for the minimum number of arguments
-// func verify() string {
-// 	var f string
-// 	if inputs < 2 {
-// 		f = "--zero"
-// 	} else {
-// 		f = updates[1]
-// 	}
-// 	return f
-// }
-
 // Check to see if the current release branch already exists locally
 func exists(prefix string) bool {
 	found := false

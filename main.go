@@ -67,7 +67,7 @@ func version() {
 // Print help information for using the program
 func about() {
 	fmt.Println(yellow, "\nUsage:", reset)
-	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
+	fmt.Println("  [program] [flag]")
 	fmt.Println(yellow, "\nOptions:")
 	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
 	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
@@ -76,7 +76,7 @@ func about() {
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
 	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(green, "   bowerbird -m")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
