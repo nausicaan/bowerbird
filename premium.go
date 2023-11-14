@@ -32,8 +32,8 @@ func quarterback() {
 	correct()
 	commit()
 	tracking("Tagging to Satis")
-	// tags()
-	// tracking("Git Push")
+	tags()
+	tracking("Git Push")
 	// push()
 }
 
@@ -41,7 +41,6 @@ func quarterback() {
 func premium() {
 	plugin, ticket = updates[0], updates[1]
 	assign()
-	os.Chdir(hmdr + "/Documents/bitbucket/" + folder[1])
 	serialize()
 	satis.Version, event.Version = number[1], number[1]
 
@@ -56,6 +55,12 @@ func premium() {
 	}
 }
 
+// Split the supplied arguments and assign them to variables
+func assign() {
+	number = strings.Split(plugin, ":")
+	folder = strings.Split(number[0], "/")
+}
+
 // Read the composer.json file and store the results in a structure
 func serialize() {
 	current, _ := os.ReadFile("composer.json")
@@ -63,12 +68,6 @@ func serialize() {
 	inspect(err)
 	err = json.Unmarshal(current, &event)
 	inspect(err)
-}
-
-// Split the supplied arguments and assign them to variables
-func assign() {
-	number = strings.Split(plugin, ":")
-	folder = strings.Split(number[0], "/")
 }
 
 // Run the update script on downloaded content

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Launch the program and execute the appropriate code
@@ -20,6 +21,7 @@ func main() {
 		flag = "-p"
 		files := ls(hmdr + "/Documents/interactions/premium")
 		for _, file := range files {
+			os.Chdir(hmdr + "/Documents/bitbucket/" + strings.TrimSuffix(file, ".txt"))
 			discovery(hmdr + "/Documents/interactions/premium/" + file)
 			premium()
 		}
