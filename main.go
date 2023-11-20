@@ -16,14 +16,18 @@ func main() {
 	case "-m", "--managed", "-r", "--release":
 		os.Chdir(hmdr + "/Documents/bitbucket/blog_gov_bc_ca")
 		doublecheck()
-		flagtest(flag)
+		delegate(flag)
 	case "-p", "--premium":
 		flag = "-p"
-		files := ls(hmdr + "/Documents/interactions/premium")
+		files := ls(hmdr + "/Documents/interactions/premium/")
 		for _, file := range files {
-			os.Chdir(hmdr + "/Documents/bitbucket/" + strings.TrimSuffix(file, ".txt"))
-			discovery(hmdr + "/Documents/interactions/premium/" + file)
-			premium()
+			if file == ".DS_Store" {
+				cleanup(file)
+			} else {
+				os.Chdir(hmdr + "/Documents/bitbucket/" + strings.TrimSuffix(file, ".txt"))
+				discovery(hmdr + "/Documents/interactions/premium/" + file)
+				premium()
+			}
 		}
 	case "--zero":
 		about()
@@ -35,7 +39,7 @@ func main() {
 }
 
 // Determine which function to call based on the passed variable
-func flagtest(flag string) {
+func delegate(flag string) {
 	prepare()
 	switch flag {
 	case "-m", "--managed":

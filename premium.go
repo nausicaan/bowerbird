@@ -34,14 +34,14 @@ func quarterback() {
 	tracking("Tagging to Satis")
 	tags()
 	tracking("Git Push")
-	// push()
+	push()
 }
 
 // Premium directs the preliminary actions to determine if the program can continue
 func premium() {
 	plugin, ticket = updates[0], updates[1]
-	assign()
 	serialize()
+	assign()
 	satis.Version, event.Version = number[1], number[1]
 
 	if strings.Contains(folder[1], "event") {
@@ -90,4 +90,9 @@ func correct() {
 func tags() {
 	execute("git", "tag", "v"+satis.Version)
 	execute("git", "push", "origin", "--tags")
+}
+
+// Remove files or directories
+func cleanup(cut ...string) {
+	inspect(os.Remove(cut[0.]))
 }
