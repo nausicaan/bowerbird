@@ -13,7 +13,7 @@ func main() {
 		version()
 	case "-h", "--help":
 		about()
-	case "-m", "--managed", "-r", "--release":
+	case "-w", "--wpackagist", "-r", "--release":
 		os.Chdir(hmdr + "/Documents/bitbucket/blog_gov_bc_ca")
 		doublecheck()
 		delegate(flag)
@@ -42,10 +42,10 @@ func main() {
 func delegate(flag string) {
 	prepare()
 	switch flag {
-	case "-m", "--managed":
-		flag = "-m"
-		discovery(hmdr + "/Documents/interactions/managed.txt")
-		managed()
+	case "-w", "--wpackagist":
+		flag = "-w"
+		discovery(hmdr + "/Documents/interactions/wpackagist.txt")
+		wpackagist()
 	case "-r", "--release":
 		flag = "-r"
 		discovery(hmdr + "/Documents/interactions/release.txt")
@@ -77,12 +77,12 @@ func about() {
 	fmt.Println(yellow, "\nOptions:")
 	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
 	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
-	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
+	fmt.Println(green, " -w, --wpackagist", reset, "	Satis & WPackagist Plugin Update")
 	fmt.Println(green, " -v, --version", reset, "	Display App Version")
 	fmt.Println(green, " -h, --help", reset, "		Help Information")
 	fmt.Println(yellow, "\nExample:", reset)
 	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m")
+	fmt.Println(green, "   bowerbird -w")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")

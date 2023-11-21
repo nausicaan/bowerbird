@@ -46,10 +46,10 @@ Currently there are three supported scenarios available, using flags to specify 
 bowerbird -p
 ```
 
-### Managed (Plugins currently available via WPackagist or Satis):
+### WordPress Packagist (Plugins currently available via WPackagist or Satis):
 
 ``` console
-bowerbird -m
+bowerbird -w
 ```
 
 ### Release (In-house Production ready content):
@@ -58,7 +58,7 @@ bowerbird -m
 bowerbird -r
 ```
 
-Flags `-r` and `-m` can accept multiple updates, chain together as many as you like!
+Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
 
 ## License
 
