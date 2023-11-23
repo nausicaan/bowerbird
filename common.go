@@ -11,10 +11,6 @@ import (
 
 const (
 	bv        string = "2.1"
-	reset     string = "\033[0m"
-	green     string = "\033[32m"
-	yellow    string = "\033[33m"
-	red       string = "\033[41m"
 	upbranch  string = "update/"
 	relbranch string = "release/"
 	halt      string = "program halted "
