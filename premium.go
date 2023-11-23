@@ -40,6 +40,8 @@ func quarterback() {
 // Premium directs the preliminary actions to determine if the program can continue
 func premium() {
 	plugin, ticket = updates[0], updates[1]
+	atf(common+"operational/approved.txt", plugin+" "+ticket+" ")
+	atf(common+"operational/release.txt", plugin+" "+ticket+" ")
 	serialize()
 	assign()
 	satis.Version, event.Version = number[1], number[1]
@@ -90,9 +92,4 @@ func correct() {
 func tags() {
 	execute("git", "tag", "v"+satis.Version)
 	execute("git", "push", "origin", "--tags")
-}
-
-// Remove files or directories
-func cleanup(cut ...string) {
-	inspect(os.Remove(cut[0.]))
 }

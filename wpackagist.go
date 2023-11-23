@@ -23,6 +23,7 @@ func sift() {
 		plugin = updates[i]
 		i++
 		ticket = updates[i]
+		atf(common+"operational/release.txt", plugin+" "+ticket+" ")
 		require()
 		commit()
 	}

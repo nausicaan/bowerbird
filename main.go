@@ -13,19 +13,19 @@ func main() {
 		version()
 	case "-h", "--help":
 		about()
-	case "-w", "--wpackagist", "-r", "--release":
-		os.Chdir(hmdr + "/Documents/bitbucket/blog_gov_bc_ca")
+	case "-w", "--wpackagist", "-r", "--release", "-ap", "approved":
+		os.Chdir(bitbucket + "blog_gov_bc_ca")
 		doublecheck()
 		delegate(flag)
 	case "-p", "--premium":
 		flag = "-p"
-		files := ls(hmdr + "/Documents/interactions/premium/")
+		files := ls(common + "premium/")
 		for _, file := range files {
 			if file == ".DS_Store" {
 				cleanup(file)
 			} else {
-				os.Chdir(hmdr + "/Documents/bitbucket/" + strings.TrimSuffix(file, ".txt"))
-				discovery(hmdr + "/Documents/interactions/premium/" + file)
+				os.Chdir(bitbucket + strings.TrimSuffix(file, ".txt"))
+				discovery(common + "premium/" + file)
 				premium()
 			}
 		}
@@ -43,13 +43,15 @@ func delegate(flag string) {
 	prepare()
 	switch flag {
 	case "-w", "--wpackagist":
-		flag = "-w"
-		discovery(hmdr + "/Documents/interactions/wpackagist.txt")
+		discovery(common + "operational/wpackagist.txt")
 		wpackagist()
 	case "-r", "--release":
 		flag = "-r"
-		discovery(hmdr + "/Documents/interactions/release.txt")
+		discovery(common + "operational/release.txt")
 		released()
+	case "-ap", "approved":
+		discovery(common + "operational/approved.txt")
+		wpackagist()
 	}
 }
 

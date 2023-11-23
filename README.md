@@ -10,7 +10,7 @@ Bowerbird is a WordPress plugin update install tool. It simplifies the process o
 
 - Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
-- An *interactions* folder in `~/Documents/` shared between [Silkworm](https://github.com/nausicaan/bowerbird.git) and Bowerbird.
+- An *common* folder in `~/Documents/` shared between [Silkworm](https://github.com/nausicaan/bowerbird.git) and Bowerbird.
 
 ## Build
 
@@ -38,27 +38,39 @@ Navigate to the folder containing your ***composer.json*** file and run:
 
 ## Examples
 
-Currently there are three supported scenarios available, using flags to specify each.
+Currently there are four supported scenarios available, using flags to specify each.
 
-### Premium (Purchased third party plugins):
+### Premium (Purchased third party plugins)
+
+Creates an update branch be merged:
 
 ``` console
 bowerbird -p
 ```
 
-### WordPress Packagist (Plugins currently available via WPackagist or Satis):
+### Approved Premium
+
+To be added to a main repo:
+
+``` console
+bowerbird -ap
+```
+
+### Packagist
+
+Plugins currently available via WPackagist:
 
 ``` console
 bowerbird -w
 ```
 
-### Release (In-house Production ready content):
+### Release
+
+In-house Production ready content:
 
 ``` console
 bowerbird -r
 ```
-
-Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
 
 ## License
 

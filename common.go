@@ -22,19 +22,20 @@ const (
 )
 
 var (
-	inputs  int
-	event   Event
-	satis   Satis
-	plugin  string
-	ticket  string
-	release string
-	number  []string
-	folder  []string
-	updates []string
-	flag    = os.Args[1]
-	hmdr, _ = os.UserHomeDir()
-	reader  = bufio.NewReader(os.Stdin)
-	gitpath = hmdr + "/Documents/github/silkworm/"
+	inputs    int
+	event     Event
+	satis     Satis
+	plugin    string
+	ticket    string
+	release   string
+	number    []string
+	folder    []string
+	updates   []string
+	flag      = os.Args[1]
+	hmdr, _   = os.UserHomeDir()
+	reader    = bufio.NewReader(os.Stdin)
+	common    = hmdr + "/Documents/common/"
+	bitbucket = hmdr + "/Documents/bitbucket/"
 )
 
 func discovery(filepath string) {
@@ -49,6 +50,18 @@ func read(file string) []byte {
 	outcome, problem := os.ReadFile(file)
 	inspect(problem)
 	return outcome
+}
+
+// Open a file and append a string
+func atf(name, content string) {
+	// Open a file for appending, create it if it doesn't exist
+	file, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	inspect(err)
+	defer file.Close()
+
+	// Write the content to the file
+	_, err = file.WriteString(content)
+	inspect(err)
 }
 
 // Record a list of files in a folder
@@ -124,6 +137,11 @@ func inspect(err error) {
 		fmt.Println(err)
 		return
 	}
+}
+
+// Remove files or directories
+func cleanup(cut ...string) {
+	inspect(os.Remove(cut[0.]))
 }
 
 // Check to see if the current release branch already exists locally
