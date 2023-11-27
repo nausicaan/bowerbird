@@ -40,7 +40,7 @@ Currently there are four supported scenarios available, using flags to specify e
 
 ### Premium (Purchased third party plugins)
 
-Creates an update branch be merged:
+Creates an update branch to be merged:
 
 ``` console
 bowerbird -p
@@ -48,7 +48,7 @@ bowerbird -p
 
 ### Approved Premium
 
-To be added to a main repo:
+Add approved updates to a main repo:
 
 ``` console
 bowerbird -ap

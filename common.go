@@ -2,12 +2,27 @@ package main
 
 import (
 	"bufio"
-	"errors"
-	"fmt"
+	"encoding/json"
 	"os"
-	"os/exec"
 	"strings"
+	"time"
 )
+
+// Desso holds the values needed to move updates from testing to release
+type Desso struct {
+	Issues []struct {
+		Fields struct {
+			Project struct {
+				ID string `json:"id"`
+			} `json:"project"`
+			Updated []string `json:"updated"`
+			Labels  []string `json:"labels"`
+			Status  struct {
+				ID string `json:"id"`
+			} `json:"status"`
+		}
+	}
+}
 
 const (
 	bv        string = "2.1"
@@ -19,13 +34,14 @@ const (
 
 var (
 	inputs    int
+	desso     Desso
 	event     Event
 	satis     Satis
 	plugin    string
-	ticket    string
 	release   string
-	number    []string
+	ticket    string
 	folder    []string
+	number    []string
 	updates   []string
 	flag      = os.Args[1]
 	hmdr, _   = os.UserHomeDir()
@@ -60,132 +76,26 @@ func atf(name, content string) {
 	inspect(err)
 }
 
-// Record a list of files in a folder
-func ls(folder string) []string {
-	var content []string
-	dir := expose(folder)
+// Grab the ticket information from Jira in order to extract the DESSO-XXXX identifier
+func apiget(ticket string) {
+	/* Test method to aquire data for the result variable */
+	result := read(common + "db/search.json")
+	// result := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"search?jql=summary~%27"+ticket+"%27")
+	json.Unmarshal(result, &desso)
+}
 
-	files, err := dir.ReadDir(0)
+func difference(past, present string) (time.Duration, error) {
+	Subtrahend, err := time.Parse(time.RFC3339Nano, past)
 	inspect(err)
-
-	for _, f := range files {
-		content = append(content, f.Name())
-	}
-	return content
-}
-
-// Open a file for reading and return an os.File variable
-func expose(file string) *os.File {
-	outcome, err := os.Open(file)
+	Minuend, err := time.Parse(time.RFC3339Nano, present)
 	inspect(err)
-	return outcome
+	return Minuend.Sub(Subtrahend), nil
 }
 
-// Confirm the current working directory is correct
-func doublecheck() {
-	var filePath string = "composer-prod.json"
-
-	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
-		alert("This is not the correct folder,")
-	}
-}
-
-// Switch to the desired branch, and pull any changes
-func prepare() {
-	tracking("Preparing Branch")
-	var branch string
-
-	if flag == "-p" && folder[1] == "events-virtual" {
-		branch = "main"
-	} else if flag == "-p" {
-		branch = "master"
-	} else {
-		branch = "development"
-	}
-	execute("git", "switch", branch)
-	execute("git", "pull")
-}
-
-// Write a passed variable to a named file
-func document(name string, d []byte) {
-	inspect(os.WriteFile(name, d, 0644))
-}
-
-// Get user input via screen prompt
-func solicit(prompt string) string {
-	fmt.Print(prompt)
-	response, _ := reader.ReadString('\n')
-	return strings.TrimSpace(response)
-}
-
-// Run standard terminal commands and display the output
-func execute(task string, args ...string) {
-	osCmd := exec.Command(task, args...)
-	osCmd.Stdout = os.Stdout
-	osCmd.Stderr = os.Stderr
-	err := osCmd.Run()
+func amount() time.Duration {
+	currentTime := time.Now().Format(time.RFC3339Nano)
+	lastUpdated := "2023-11-01T12:14:09.920-07:00"
+	duration, err := difference(lastUpdated, currentTime)
 	inspect(err)
-}
-
-// Check for errors, print the result if found
-func inspect(err error) {
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-}
-
-// Remove files or directories
-func cleanup(cut ...string) {
-	inspect(os.Remove(cut[0.]))
-}
-
-// Check to see if the current release branch already exists locally
-func exists(prefix string) bool {
-	found := false
-	b, _ := exec.Command("git", "branch").Output()
-	if strings.Contains(string(b), prefix+release) {
-		found = true
-	}
-	return found
-}
-
-// Check for edge cases which require the -W flag
-func edge() bool {
-	found := false
-	if strings.Contains(plugin, "roots/wordpress") {
-		found = true
-	}
-	return found
-}
-
-// Checkout an update or release branch
-func checkout(prefix string) {
-	if flag == "-r" {
-		if exists(prefix) {
-			execute("git", "switch", prefix+release)
-		} else {
-			execute("git", "checkout", "-b", prefix+release)
-		}
-	} else {
-		execute("git", "checkout", "-b", prefix+ticket)
-	}
-}
-
-// Add and Commit the update
-func commit() {
-	execute("git", "add", ".")
-	execute("git", "commit", "-m", plugin+" ("+ticket+")")
-}
-
-// Push modified content to a git repository
-func push() {
-	switch flag {
-	case "-r":
-		execute("git", "push", "--set-upstream", "origin", relbranch+release)
-	case "-p":
-		execute("git", "push", "--set-upstream", "origin", upbranch+ticket)
-	default:
-		execute("git", "push")
-	}
+	return duration
 }
