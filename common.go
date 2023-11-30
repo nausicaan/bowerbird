@@ -8,20 +8,37 @@ import (
 	"time"
 )
 
+// Atlassian builds a list of jira tokens and api addresses
+type Atlassian struct {
+	Base  string `json:"base"`
+	Token string `json:"token"`
+}
+
 // Desso holds the values needed to move updates from testing to release
 type Desso struct {
-	Issues []struct {
-		Fields struct {
-			Project struct {
-				ID string `json:"id"`
-			} `json:"project"`
-			Updated []string `json:"updated"`
-			Labels  []string `json:"labels"`
-			Status  struct {
-				ID string `json:"id"`
-			} `json:"status"`
-		}
-	}
+	Key    string `json:"key"`
+	Fields struct {
+		Project struct {
+			ID string `json:"id"`
+		} `json:"project"`
+		Updated string `json:"updated"`
+		Status  struct {
+			Category struct {
+				ID   int64  `json:"id"`
+				Name string `json:"name"`
+			} `json:"statusCategory"`
+		} `json:"status"`
+		Labels      []string     `json:"labels"`
+		Summary     string       `json:"summary"`
+		FixVersions []FixVersion `json:"fixVersions"`
+	} `json:"fields"`
+}
+
+// FixVersion holds the information about a release
+type FixVersion struct {
+	Name        string `json:"name"`
+	Released    bool   `json:"released"`
+	ReleaseDate string `json:"releaseDate"`
 }
 
 const (
@@ -43,6 +60,7 @@ var (
 	folder    []string
 	number    []string
 	updates   []string
+	jira      Atlassian
 	flag      = os.Args[1]
 	hmdr, _   = os.UserHomeDir()
 	reader    = bufio.NewReader(os.Stdin)
@@ -50,6 +68,7 @@ var (
 	bitbucket = hmdr + "/Documents/bitbucket/"
 )
 
+// Parse files created by Silkworm
 func discovery(filepath string) {
 	goals := read(filepath)
 	updates = strings.Split(string(goals), " ")
@@ -57,45 +76,28 @@ func discovery(filepath string) {
 	inputs = len(updates)
 }
 
-// Read any file and return the contents as a byte variable
-func read(file string) []byte {
-	outcome, problem := os.ReadFile(file)
-	inspect(problem)
-	return outcome
-}
-
-// Open a file and append a string
-func atf(name, content string) {
-	// Open a file for appending, create it if it doesn't exist
-	file, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	inspect(err)
-	defer file.Close()
-
-	// Write the content to the file
-	_, err = file.WriteString(content)
-	inspect(err)
-}
-
 // Grab the ticket information from Jira in order to extract the DESSO-XXXX identifier
 func apiget(ticket string) {
 	/* Test method to aquire data for the result variable */
-	result := read(common + "db/search.json")
+	result := read(common + "db/d1510.json")
 	// result := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"search?jql=summary~%27"+ticket+"%27")
 	json.Unmarshal(result, &desso)
 }
 
-func difference(past, present string) (time.Duration, error) {
-	Subtrahend, err := time.Parse(time.RFC3339Nano, past)
+// Calculate the difference between two ISO 8601 formatted units of time
+func subtract(bigger, smaller string) (time.Duration, error) {
+	Minuend, err := time.Parse(time.RFC3339Nano, bigger)
 	inspect(err)
-	Minuend, err := time.Parse(time.RFC3339Nano, present)
+	Subtrahend, err := time.Parse(time.RFC3339Nano, smaller)
 	inspect(err)
 	return Minuend.Sub(Subtrahend), nil
 }
 
-func amount() time.Duration {
+// Get the current time and
+func amount(lastUpdated string) time.Duration {
 	currentTime := time.Now().Format(time.RFC3339Nano)
-	lastUpdated := "2023-11-01T12:14:09.920-07:00"
-	duration, err := difference(lastUpdated, currentTime)
+	// lastyUpdated := "2023-11-01T12:14:09.920-07:00"
+	duration, err := subtract(currentTime, lastUpdated)
 	inspect(err)
 	return duration
 }

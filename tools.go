@@ -19,11 +19,30 @@ func document(name string, d []byte) {
 	inspect(os.WriteFile(name, d, 0644))
 }
 
+// Read any file and return the contents as a byte variable
+func read(file string) []byte {
+	outcome, problem := os.ReadFile(file)
+	inspect(problem)
+	return outcome
+}
+
 // Open a file for reading and return an os.File variable
 func expose(file string) *os.File {
 	outcome, err := os.Open(file)
 	inspect(err)
 	return outcome
+}
+
+// Open a file and append a string
+func atf(name, content string) {
+	// Open a file for appending, create it if it doesn't exist
+	file, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	inspect(err)
+	defer file.Close()
+
+	// Write the content to the file
+	_, err = file.WriteString(content)
+	inspect(err)
 }
 
 // Record a list of files in a folder
@@ -40,13 +59,22 @@ func ls(folder string) []string {
 	return content
 }
 
-// Run standard terminal commands and display the output
-func execute(task string, args ...string) {
+// Run a terminal command using flags to customize the output
+func execute(variation, task string, args ...string) []byte {
 	osCmd := exec.Command(task, args...)
-	osCmd.Stdout = os.Stdout
-	osCmd.Stderr = os.Stderr
-	err := osCmd.Run()
-	inspect(err)
+	switch variation {
+	case "-e":
+		exec.Command(task, args...).CombinedOutput()
+	case "-c":
+		both, _ := osCmd.CombinedOutput()
+		return both
+	case "-v":
+		osCmd.Stdout = os.Stdout
+		osCmd.Stderr = os.Stderr
+		err := osCmd.Run()
+		inspect(err)
+	}
+	return nil
 }
 
 // Remove files or directories

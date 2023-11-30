@@ -12,6 +12,15 @@ Bowerbird is a WordPress plugin update install tool. It simplifies the process o
 
 - An *common* folder in `~/Documents/` shared between [Silkworm](https://github.com/nausicaan/bowerbird.git) and Bowerbird.
 
+A `jira.json` file containing your API URL and Bearer token to enable JQL searching:
+
+``` go
+{
+    "base": "Jira Issue base URL",
+    "token": "Jira Bearer Token"
+}
+```
+
 ## Build
 
 From the root folder containing the `go` files, use the command that matches your environment:
