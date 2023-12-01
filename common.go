@@ -14,39 +14,47 @@ type Atlassian struct {
 	Token string `json:"token"`
 }
 
-// Desso holds the values needed to move updates from testing to release
+// Desso contains the JSON parameters for a new Jira ticket
 type Desso struct {
-	Key    string `json:"key"`
-	Fields struct {
-		Project struct {
-			ID string `json:"id"`
-		} `json:"project"`
-		Updated string `json:"updated"`
-		Status  struct {
-			Category struct {
-				ID   int64  `json:"id"`
-				Name string `json:"name"`
-			} `json:"statusCategory"`
-		} `json:"status"`
-		Labels      []string     `json:"labels"`
-		Summary     string       `json:"summary"`
-		FixVersions []FixVersion `json:"fixVersions"`
-	} `json:"fields"`
+	Total  int64 `json:"total"`
+	Issues []struct {
+		Key    string `json:"key,omitempty"`
+		Fields struct {
+			Issuetype struct {
+				ID string `json:"id,omitempty"`
+			} `json:"issuetype,omitempty"`
+			Status struct {
+				Category struct {
+					ID   int64  `json:"id,omitempty"`
+					Name string `json:"name,omitempty"`
+				} `json:"statusCategory,omitempty"`
+			} `json:"status,omitempty"`
+			Project struct {
+				ID  string `json:"id,omitempty"`
+				Key string `json:"key,omitempty"`
+			} `json:"project,omitempty"`
+			Labels      []string     `json:"labels,omitempty"`
+			Updated     string       `json:"updated,omitempty"`
+			Summary     string       `json:"summary,omitempty"`
+			FixVersions []FixVersion `json:"fixVersions,omitempty"`
+		} `json:"fields,omitempty"`
+	} `json:"issues,omitempty"`
 }
 
 // FixVersion holds the information about a release
 type FixVersion struct {
-	Name        string `json:"name"`
-	Released    bool   `json:"released"`
-	ReleaseDate string `json:"releaseDate"`
+	Name        string `json:"name,omitempty"`
+	Released    bool   `json:"released,omitempty"`
+	ReleaseDate string `json:"releaseDate,omitempty"`
 }
 
 const (
-	bv        string = "2.1"
-	upbranch  string = "update/"
-	relbranch string = "release/"
-	halt      string = "program halted "
-	zero      string = "Insufficient arguments supplied -"
+	bv        string  = "2.1"
+	benchmark float64 = 168.00
+	upbranch  string  = "update/"
+	relbranch string  = "release/"
+	halt      string  = "program halted "
+	zero      string  = "Insufficient arguments supplied -"
 )
 
 var (
@@ -77,10 +85,12 @@ func discovery(filepath string) {
 }
 
 // Grab the ticket information from Jira in order to extract the DESSO-XXXX identifier
-func apiget(ticket string) {
+func apiget(summary string) {
 	/* Test method to aquire data for the result variable */
-	result := read(common + "db/d1510.json")
-	// result := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"search?jql=summary~%27"+ticket+"%27")
+	result := read(common + summary)
+	// swimlane1 := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+todo)
+	// swimlane2 := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+testing)
+	// result := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"search?jql=summary~%27"+summary+"%27")
 	json.Unmarshal(result, &desso)
 }
 
