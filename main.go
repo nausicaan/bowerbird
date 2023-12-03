@@ -41,19 +41,19 @@ func main() {
 		}
 	}
 
-	// changedir()
-	// if len(freebies) > 0 {
-	// 	flag = "-w"
-	// 	wpackagist(freebies)
-	// }
+	changedir()
+	if len(freebies) > 0 {
+		flag = "-w"
+		wpackagist(freebies)
+	}
 
-	// if len(developers) > 0 {
-	// 	flag = "-r"
-	// 	inhouse(developers)
-	// }
+	if len(developers) > 0 {
+		flag = "-r"
+		inhouse(developers)
+	}
 
-	// if len(deployments) > 0 {
-	// 	flag = "-r"
-	// 	releases(deployments)
-	// }
+	if len(deployments) > 0 {
+		flag = "-r"
+		releases(deployments)
+	}
 }

@@ -6,20 +6,25 @@ Bowerbird is a WordPress plugin update install tool. It simplifies the process o
 
 ## Prerequisites
 
-- Login information to download the update package. -- ***premium content only*** --
+- Login information to download the updated package. -- ***premium content only*** --
 
 - Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
 - An *common* folder in `~/Documents/` shared between [Silkworm](https://github.com/nausicaan/bowerbird.git) and Bowerbird.
 
-A `jira.json` file containing your API URL and Bearer token to enable JQL searching:
+A `jira.json` file containing your API URL and Bearer token to enable JQL searching, along with predefined query strings:
 
 ``` go
 {
     "base": "Jira Issue base URL",
-    "token": "Jira Bearer Token"
+    "token": "Jira Bearer Token",
+    "todo": "search?jql=", // JQL search to capture the contents of the "To Do" swimlane
+    "testing": "search?jql=", // JQL search to capture the contents of the "Testing" swimlane
+    "lastfix": "search?jql=" // JQL search to identify the latest FixVersion [fixVersion+in+(latestReleasedVersion())]
 }
 ```
+
+Note: The **"To Do"** swimlane contains updates for Bowerbird to perform, and the **"Testing"** swimlane contains updates currently in a *Test* environment for Bowerbird to deploy to *Production* if the criteria is met.
 
 ## Build
 
@@ -40,43 +45,13 @@ GOOS=linux GOARCH=amd64 go build -o [name] .
 ## Run
 
 ``` console
-[program] [flag]
+[program]
 ```
 
-## Examples
-
-Currently there are four supported scenarios available, using flags to specify each.
-
-### Premium (Purchased third party plugins)
-
-Creates an update branch to be merged:
+## Example
 
 ``` console
-bowerbird -p
-```
-
-### Approved Premium
-
-Add approved updates to a main repo:
-
-``` console
-bowerbird -ap
-```
-
-### Packagist
-
-Plugins currently available via WPackagist:
-
-``` console
-bowerbird -w
-```
-
-### Release
-
-In-house Production ready content:
-
-``` console
-bowerbird -r
+bowerbird
 ```
 
 ## License
