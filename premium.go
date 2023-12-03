@@ -6,23 +6,6 @@ import (
 	"strings"
 )
 
-// Satis structure captures the contents of the composer.json file for typical premium plugins
-type Satis struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-	Type    string `json:"type"`
-}
-
-// Event structure captures the contents of the composer.json file for Events Calendar related items
-type Event struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
-	Type    string `json:"type"`
-	Require struct {
-		EventsCalendar string `json:"wpackagist-plugin/the-events-calendar"`
-	} `json:"require"`
-}
-
 // A sequential list of tasks run to complete the program
 func quarterback() {
 	prepare()
@@ -39,11 +22,9 @@ func quarterback() {
 
 // Premium directs the preliminary actions to determine if the program can continue
 func premium() {
-	plugin, ticket = updates[0], updates[1]
-	atf(common+"operational/approved.txt", plugin+" "+ticket+" ")
-	atf(common+"operational/release.txt", plugin+" "+ticket+" ")
 	serialize()
 	assign()
+	os.Chdir(bitbucket + folder[1])
 	satis.Version, event.Version = number[1], number[1]
 
 	if strings.Contains(folder[1], "event") {

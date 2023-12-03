@@ -1,90 +1,59 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"encoding/json"
 	"strings"
 )
 
 // Launch the program and execute the appropriate code
 func main() {
-	switch flag {
-	case "-v", "--version":
-		version()
-	case "-h", "--help":
-		about()
-	case "-w", "--wpackagist", "-r", "--release", "-ap", "approved":
-		os.Chdir(bitbucket + "blog_gov_bc_ca")
-		doublecheck()
-		delegate(flag)
-	case "-p", "--premium":
-		flag = "-p"
-		files := ls(common + "premium/")
-		for _, file := range files {
-			if file == ".DS_Store" {
-				cleanup(file)
-			} else {
-				os.Chdir(bitbucket + strings.TrimSuffix(file, ".txt"))
-				discovery(common + "premium/" + file)
-				premium()
+	json.Unmarshal(apiget("db/lastfix.json"), &history)
+	// json.Unmarshal(apiget(jira.LastFix), &history)
+	var freebies, developers, deployments []string
+	for index, element := range reads {
+		json.Unmarshal(apiget(element), &swimlane)
+		if swimlane.Total > 0 {
+			for _, issue := range swimlane.Issues {
+				ticket = issue.Key
+				plugin = issue.Fields.Summary
+				switch index {
+				case 0: // ToDo SwimLane
+					if strings.Contains(plugin, "-premium-") {
+						flag = "-p"
+						premium()
+					} else if strings.Contains(plugin, "bcgov-plugin") || strings.Contains(plugin, "bcgov-theme") {
+						developers = append(developers, plugin, ticket)
+					} else {
+						freebies = append(freebies, plugin, ticket)
+					}
+				case 1: // Testing SwimLane
+					upd := issue.Fields.Updated
+					passed := (amount(upd[:26] + string(':') + upd[26:])).Hours()
+					if passed > benchmark {
+						deployments = append(deployments, plugin, ticket)
+						issue.Fields.FixVersions[0].Name = convert()
+						issue.Fields.Status.Category.Name = "Ready for Deploy"
+						// body, _ := json.Marshal(swimlane)
+						// execute("-e", "curl", "-D-", "-X", "POST", "-d", string(body), "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"issue/"+ticket)
+					}
+				}
 			}
 		}
-	case "--zero":
-		about()
-		alert("No flag detected -")
-	default:
-		about()
-		alert("Bad flag detected -")
 	}
-}
 
-// Determine which function to call based on the passed variable
-func delegate(flag string) {
-	prepare()
-	switch flag {
-	case "-w", "--wpackagist":
-		discovery(common + "operational/wpackagist.txt")
-		wpackagist()
-	case "-r", "--release":
-		flag = "-r"
-		discovery(common + "operational/release.txt")
-		released()
-	case "-ap", "approved":
-		discovery(common + "operational/approved.txt")
-		wpackagist()
-	}
-}
+	// changedir()
+	// if len(freebies) > 0 {
+	// 	flag = "-w"
+	// 	wpackagist(freebies)
+	// }
 
-// Print a colourized error message
-func alert(message string) {
-	fmt.Println(message, halt)
-	os.Exit(0)
-}
+	// if len(developers) > 0 {
+	// 	flag = "-r"
+	// 	inhouse(developers)
+	// }
 
-// Provide and highlight informational messages
-func tracking(message string) {
-	fmt.Println("**", message, "**")
-}
-
-// Print the build version of the program
-func version() {
-	fmt.Println("Bowerbird", bv)
-}
-
-// Print help information for using the program
-func about() {
-	fmt.Println("\nUsage:")
-	fmt.Println("  [program] [flag]")
-	fmt.Println("\nOptions:")
-	fmt.Println("  -p, --premium", "	Premium Plugin Repository Update")
-	fmt.Println("  -r, --release", "	Production Release Plugin Update")
-	fmt.Println("  -w, --wpackagist", "	Satis & WPackagist Plugin Update")
-	fmt.Println("  -v, --version", "	Display App Version")
-	fmt.Println("  -h, --help", "		Help Information")
-	fmt.Println("\nExample:")
-	fmt.Println("  bowerbird -w")
-	fmt.Println("\nHelp:")
-	fmt.Println("  For more information go to:")
-	fmt.Println("    https://github.com/nausicaan/bowerbird.git")
-	fmt.Println()
+	// if len(deployments) > 0 {
+	// 	flag = "-r"
+	// 	releases(deployments)
+	// }
 }

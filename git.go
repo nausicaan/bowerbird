@@ -7,8 +7,28 @@ import (
 	"strings"
 )
 
+// Check to see if the current release branch already exists locally
+func exists(prefix string) bool {
+	found := false
+	b, _ := exec.Command("git", "branch").Output()
+	if strings.Contains(string(b), prefix+release) {
+		found = true
+	}
+	return found
+}
+
+// Check for edge cases which require the -W flag
+func edge() bool {
+	found := false
+	if strings.Contains(plugin, "roots/wordpress") {
+		found = true
+	}
+	return found
+}
+
 // Confirm the current working directory is correct
-func doublecheck() {
+func changedir() {
+	os.Chdir(bitbucket + "blog_gov_bc_ca")
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
@@ -30,25 +50,6 @@ func prepare() {
 	}
 	execute("git", "switch", branch)
 	execute("git", "pull")
-}
-
-// Check to see if the current release branch already exists locally
-func exists(prefix string) bool {
-	found := false
-	b, _ := exec.Command("git", "branch").Output()
-	if strings.Contains(string(b), prefix+release) {
-		found = true
-	}
-	return found
-}
-
-// Check for edge cases which require the -W flag
-func edge() bool {
-	found := false
-	if strings.Contains(plugin, "roots/wordpress") {
-		found = true
-	}
-	return found
 }
 
 // Checkout an update or release branch

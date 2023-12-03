@@ -1,29 +1,35 @@
 package main
 
 // A sequential list of tasks run to complete the program
-func wpackagist() {
+func wpackagist(content []string) {
 	tracking("Composer Update")
 	execute("composer", "update")
 	tracking("Plugin Update")
-	sift()
+	sift(content)
 	tracking("Git Push")
 	push()
 }
 
 // Add the previously tested plugins to the composer-prod.json file
-func released() {
+func releases(content []string) {
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
-	wpackagist()
+	sift(content)
 }
 
-// Iterate through the updates array and assign plugin and ticket values
-func sift() {
-	for i := 0; i < inputs; i++ {
-		plugin = updates[i]
+// Add the Developer tested plugins to the composer-prod.json file
+func inhouse(content []string) {
+	sift(content)
+	tracking("Git Push")
+	push()
+}
+
+// Iterate through the Issues JSON object and assign plugin and ticket values
+func sift(content []string) {
+	for i := 0; i < len(content); i++ {
+		plugin = content[i]
 		i++
-		ticket = updates[i]
-		atf(common+"operational/release.txt", plugin+" "+ticket+" ")
+		ticket = content[i]
 		require()
 		commit()
 	}

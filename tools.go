@@ -4,8 +4,33 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
+	"time"
 )
+
+func convert() string {
+	lfv, err := strconv.Atoi(history.Issues[0].Fields.FixVersions[0].Name)
+	inspect(err)
+	return fmt.Sprint(lfv)
+}
+
+// Calculate the difference between two ISO 8601 formatted units of time
+func subtract(bigger, smaller string) (time.Duration, error) {
+	Minuend, err := time.Parse(time.RFC3339Nano, bigger)
+	inspect(err)
+	Subtrahend, err := time.Parse(time.RFC3339Nano, smaller)
+	inspect(err)
+	return Minuend.Sub(Subtrahend), nil
+}
+
+// Get the amount of time since a ticket was last updated
+func amount(lastUpdated string) time.Duration {
+	currentTime := time.Now().Format(time.RFC3339Nano)
+	duration, err := subtract(currentTime, lastUpdated)
+	inspect(err)
+	return duration
+}
 
 // Get user input via screen prompt
 func solicit(prompt string) string {
