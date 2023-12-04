@@ -2,23 +2,29 @@ package main
 
 // A sequential list of tasks run to complete the program
 func wpackagist(content []string) {
+	prepare()
 	tracking("Composer Update")
 	execute("composer", "update")
-	tracking("Plugin Update")
-	sift(content)
-	tracking("Git Push")
-	push()
+	composer(content)
 }
 
 // Add the previously tested plugins to the composer-prod.json file
 func releases(content []string) {
+	prepare()
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
-	sift(content)
+	composer(content)
 }
 
 // Add the Developer tested plugins to the composer-prod.json file
 func inhouse(content []string) {
+	execute("git", "switch", "master")
+	execute("git", "pull")
+	composer(content)
+}
+
+func composer(content []string) {
+	tracking("Plugin Update")
 	sift(content)
 	tracking("Git Push")
 	push()

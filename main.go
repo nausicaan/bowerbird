@@ -2,11 +2,28 @@ package main
 
 import (
 	"encoding/json"
+	"os"
 	"strings"
 )
 
 // Launch the program and execute the appropriate code
 func main() {
+	if len(os.Args) == 2 {
+		switch os.Args[1] {
+		case "-v", "--version":
+			version()
+		case "-h", "--help":
+			about()
+		default:
+			alert("Bad flag detected -")
+			about()
+		}
+	} else {
+		purpose()
+	}
+}
+
+func purpose() {
 	json.Unmarshal(apiget("db/lastfix.json"), &history)
 	// json.Unmarshal(apiget(jira.LastFix), &history)
 	var freebies, developers, deployments []string
@@ -40,7 +57,6 @@ func main() {
 			}
 		}
 	}
-
 	changedir()
 	if len(freebies) > 0 {
 		flag = "-w"
