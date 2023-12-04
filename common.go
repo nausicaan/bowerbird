@@ -22,22 +22,26 @@ const (
 )
 
 var (
-	event                   Event
-	satis                   Satis
-	flag                    = verify()
-	reader                  = bufio.NewReader(os.Stdin)
-	passed                  = os.Args
-	inputs                  = len(passed)
-	number, folder          []string
-	plugin, ticket, release string
+	event          Event
+	satis          Satis
+	flag           = verify()
+	reader         = bufio.NewReader(os.Stdin)
+	passed         = os.Args
+	inputs         = len(passed)
+	hmdr, _        = os.UserHomeDir()
+	bitbucket      = hmdr + "/Documents/bitbucket/"
+	release        string
+	plugin, ticket string
+	number, folder []string
 )
 
-func doublecheck() {
+// Confirm the current working directory is correct
+func changedir() {
+	os.Chdir(bitbucket + "blog_gov_bc_ca")
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 		alert("This is not the correct folder,")
-		os.Exit(0)
 	}
 }
 
@@ -148,6 +152,7 @@ func push() {
 // Print a colourized error message
 func alert(message string) {
 	fmt.Println(red, message, halt, reset)
+	os.Exit(0)
 }
 
 // Provide and highlight informational messages

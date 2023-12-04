@@ -28,7 +28,7 @@ GOOS=linux GOARCH=amd64 go build -o [name] .
 
 ## Run
 
-Navigate to the folder containing your ***composer.json*** file and run:
+Ensure the folder containing your ***composer.json*** file is predefined as variable and run:
 
 ``` console
 [program] [flag] [vendor/plugin]:[version] [ticket#]

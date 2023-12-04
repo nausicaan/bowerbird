@@ -23,7 +23,7 @@ func main() {
 
 // Determine which function to call based on the passed variable
 func mrtest(flag string) {
-	doublecheck()
+	changedir()
 	if inputs >= 4 {
 		prepare()
 		switch flag {
