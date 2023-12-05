@@ -83,6 +83,7 @@ var (
 	ticket   string
 	folder   []string
 	number   []string
-	queries  = []string{jira.ToDo, jira.Testing, jira.Deploy}
-	reads    = []string{"db/todo.json", "db/inprogress.json", "db/empty.json"}
+	queries  = []string{"vendor/" + jira.ToDo, "vendor/" + jira.Testing, "vendor/" + jira.Deploy}
+	/* Temporary local fix until Jira API is accessible */
+	reads = []string{"db/todo.json", "db/inprogress.json", "db/empty.json"}
 )

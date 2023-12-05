@@ -60,12 +60,10 @@ func expose(file string) *os.File {
 
 // Open a file and append a string
 func atf(name, content string) {
-	// Open a file for appending, create it if it doesn't exist
 	file, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	inspect(err)
 	defer file.Close()
 
-	// Write the content to the file
 	_, err = file.WriteString(content)
 	inspect(err)
 }
