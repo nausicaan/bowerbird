@@ -16,8 +16,10 @@ var (
 // Use JQL to query the Jira API
 func apiget(query string) []byte {
 	/* Temporary local fix until Jira API is accessible */
-	result := read(common + query)
-	// result := execute("-c", "curl", "-X", "GET", "-H", "Authorization: Bearer "+" vendor/" + jira.Token, "-H", "Content-Type: application/json", "vendor/" + jira.Base+query)
+	// result := read(common + query)
+
+	/* Jira API */
+	result := execute("-c", "curl", "-X", "GET", "-H", "\"Content-Type: application/json\"", "vendor/"+jira.Base+query, "-H", "\"Authorization: Bearer "+" vendor/"+jira.Token+"\"")
 	return result
 }
 

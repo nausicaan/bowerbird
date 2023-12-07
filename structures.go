@@ -2,11 +2,9 @@ package main
 
 // Atlassian builds a list of jira tokens and api addresses
 type Atlassian struct {
-	Base    string `json:"base"`
 	Token   string `json:"token"`
-	Done    string `json:"done"`
+	Base    string `json:"base"`
 	ToDo    string `json:"todo"`
-	Deploy  string `json:"deploy"`
 	Testing string `json:"testing"`
 	LastFix string `json:"lastfix"`
 }
@@ -83,7 +81,7 @@ var (
 	ticket   string
 	folder   []string
 	number   []string
-	queries  = []string{"vendor/" + jira.ToDo, "vendor/" + jira.Testing, "vendor/" + jira.Deploy}
+	queries  = []string{"vendor/" + jira.ToDo, "vendor/" + jira.Testing}
 	/* Temporary local fix until Jira API is accessible */
 	reads = []string{"db/todo.json", "db/inprogress.json", "db/empty.json"}
 )

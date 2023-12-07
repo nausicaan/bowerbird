@@ -24,8 +24,8 @@ func main() {
 }
 
 func purpose() {
-	json.Unmarshal(apiget("db/lastfix.json"), &history)
-	// json.Unmarshal(apiget(jira.LastFix), &history)
+	// json.Unmarshal(apiget("db/lastfix.json"), &history)
+	json.Unmarshal(apiget(jira.LastFix), &history)
 	var freebies, developers, deployments []string
 	for index, element := range reads {
 		json.Unmarshal(apiget(element), &swimlane)
@@ -50,8 +50,8 @@ func purpose() {
 						deployments = append(deployments, plugin, ticket)
 						issue.Fields.FixVersions[0].Name = convert()
 						issue.Fields.Status.Category.Name = "Ready for Deploy"
-						// body, _ := json.Marshal(swimlane)
-						// execute("-e", "curl", "-D-", "-X", "POST", "-d", string(body), "-H", "Authorization: Bearer "+jira.Token, "-H", "Content-Type: application/json", jira.Base+"issue/"+ticket)
+						body, _ := json.Marshal(swimlane)
+						execute("-e", "curl", "-X", "PUT", "--data", string(body), "-H", "\"Content-Type: application/json\"", jira.Base+"issue/"+ticket, "-H", "\"Authorization: Bearer "+jira.Token+"\"")
 					}
 				}
 			}
