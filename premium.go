@@ -39,9 +39,9 @@ func quarterback() {
 
 // Premium directs the preliminary actions to determine if the program can continue
 func premium() {
-	learn()
 	assign(passed[2], passed[3])
 	os.Chdir(bitbucket + folder[1])
+	learn()
 	satis.Version, event.Version = number[1], number[1]
 	if strings.Contains(folder[1], "event") {
 		if event.Name+":"+event.Version == plugin {
