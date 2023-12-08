@@ -27,7 +27,7 @@ func purpose() {
 	// json.Unmarshal(apiget("db/lastfix.json"), &history)
 	json.Unmarshal(apiget(jira.LastFix), &history)
 	var freebies, developers, deployments []string
-	for index, element := range reads {
+	for index, element := range queries {
 		json.Unmarshal(apiget(element), &swimlane)
 		if swimlane.Total > 0 {
 			for _, issue := range swimlane.Issues {
