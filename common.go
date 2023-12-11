@@ -18,7 +18,7 @@ const (
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
-	zero      string = "Insufficient arguments supplied -"
+	zero      string = "Not enough arguments supplied -"
 )
 
 var (
@@ -134,7 +134,7 @@ func checkout(prefix string) {
 // Add and commit the update
 func commit() {
 	execute("git", "add", ".")
-	execute("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
+	execute("git", "commit", "-w", plugin+" (DESSO-"+ticket+")")
 }
 
 // Push modified content to the git repository
@@ -170,14 +170,13 @@ func about() {
 	fmt.Println(yellow, "\nUsage:", reset)
 	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(green, " -v, --version", reset, "	Display Program Version")
 	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
 	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
-	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
-	fmt.Println(green, " -v, --version", reset, "	Display App Version")
-	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(green, " -w, --wpackagist", reset, "	Satis & WPackagist Plugin Update")
 	fmt.Println(yellow, "\nExample:", reset)
-	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(green, "   bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")

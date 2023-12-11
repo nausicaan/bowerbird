@@ -1,7 +1,7 @@
 package main
 
 // A sequential list of tasks run to complete the program
-func managed() {
+func wpackagist() {
 	tracking("Composer Update")
 	execute("composer", "update")
 	tracking("Plugin Update")
@@ -14,7 +14,7 @@ func managed() {
 func released() {
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
-	managed()
+	wpackagist()
 }
 
 // Run the appropriate composer require command based on the flag value
