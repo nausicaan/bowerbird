@@ -134,7 +134,7 @@ func checkout(prefix string) {
 // Add and commit the update
 func commit() {
 	execute("git", "add", ".")
-	execute("git", "commit", "-w", plugin+" (DESSO-"+ticket+")")
+	execute("git", "commit", "-m", plugin+" (DESSO-"+ticket+")")
 }
 
 // Push modified content to the git repository
