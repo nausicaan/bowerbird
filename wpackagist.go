@@ -4,7 +4,7 @@ package main
 func wpackagist(content []string) {
 	prepare()
 	tracking("Composer Update")
-	execute("composer", "update")
+	execute("composer", "update", "--no-install")
 	composer(content)
 }
 
@@ -51,9 +51,9 @@ func require() {
 		}
 	} else {
 		if edge() {
-			execute("composer", "require", plugin, "-W")
+			execute("composer", "require", plugin, "-W", "--no-install")
 		} else {
-			execute("composer", "require", plugin)
+			execute("composer", "require", plugin, "--no-install")
 		}
 	}
 }
