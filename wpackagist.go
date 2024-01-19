@@ -3,7 +3,7 @@ package main
 // A sequential list of tasks run to complete the program
 func wpackagist() {
 	tracking("Composer Update")
-	execute("composer", "update")
+	execute("composer", "update", "--no-install")
 	tracking("Plugin Update")
 	sift()
 	tracking("Git Push")
@@ -27,9 +27,9 @@ func require() {
 		}
 	} else {
 		if edge() {
-			execute("composer", "require", plugin, "-W")
+			execute("composer", "require", plugin, "-W", "--no-install")
 		} else {
-			execute("composer", "require", plugin)
+			execute("composer", "require", plugin, "--no-install")
 		}
 	}
 }
