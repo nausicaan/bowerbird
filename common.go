@@ -100,10 +100,10 @@ func verify() string {
 }
 
 // Check to see if the current release branch already exists locally
-func exists(prefix string) bool {
+func exists(prefix, tag string) bool {
 	found := false
 	b, _ := exec.Command("git", "branch").Output()
-	if strings.Contains(string(b), prefix+release) {
+	if strings.Contains(string(b), prefix+tag) {
 		found = true
 	}
 	return found
@@ -120,13 +120,13 @@ func edge() bool {
 
 // Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
-	if exists(prefix) && flag == "-r" {
+	if exists(prefix, release) && flag == "-r" {
 		execute("git", "switch", prefix+release)
 	} else {
 		execute("git", "checkout", "-b", prefix+release)
 	}
 
-	if exists(prefix) && flag == "-p" {
+	if exists(prefix, ticket) && flag == "-p" {
 		execute("git", "switch", prefix+ticket)
 	} else {
 		execute("git", "checkout", "-b", prefix+ticket)
