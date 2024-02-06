@@ -120,18 +120,18 @@ func edge() bool {
 
 // Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
-	if exists(prefix, release) && flag == "-r" {
-		execute("git", "switch", prefix+release)
+	suffix := ""
+	if flag == "-r" {
+		suffix = release
 	} else {
-		execute("git", "checkout", "-b", prefix+release)
+		suffix = ticket
 	}
 
-	if exists(prefix, ticket) && flag == "-p" {
-		execute("git", "switch", prefix+ticket)
+	if exists(prefix, suffix) {
+		execute("git", "switch", prefix+suffix)
 	} else {
-		execute("git", "checkout", "-b", prefix+ticket)
+		execute("git", "checkout", "-b", prefix+suffix)
 	}
-
 }
 
 // Add and commit the update
