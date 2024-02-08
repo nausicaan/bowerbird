@@ -19,6 +19,7 @@ const (
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
 	zero      string = "Not enough arguments supplied -"
+	bitbucket string = "/Documents/bitbucket/blog_gov_bc_ca"
 )
 
 var (
@@ -26,18 +27,18 @@ var (
 	satis          Satis
 	flag           = verify()
 	reader         = bufio.NewReader(os.Stdin)
+	hmdr, _        = os.UserHomeDir()
 	passed         = os.Args
 	inputs         = len(passed)
-	hmdr, _        = os.UserHomeDir()
-	bitbucket      = hmdr + "/Documents/bitbucket/"
 	release        string
-	plugin, ticket string
+	plugin         string
+	ticket         string
 	number, folder []string
 )
 
 // Confirm the current working directory is correct
 func changedir() {
-	os.Chdir(bitbucket + "blog_gov_bc_ca")
+	os.Chdir(hmdr + bitbucket)
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
