@@ -19,7 +19,7 @@ const (
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
 	zero      string = "Not enough arguments supplied -"
-	bitbucket string = "/Documents/bitbucket/blog_gov_bc_ca"
+	bitbucket string = "/Documents/bitbucket/"
 )
 
 var (
@@ -38,7 +38,7 @@ var (
 
 // Confirm the current working directory is correct
 func changedir() {
-	os.Chdir(hmdr + bitbucket)
+	os.Chdir(hmdr + bitbucket + "blog_gov_bc_ca")
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
