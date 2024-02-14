@@ -7,7 +7,7 @@ func main() {
 		version()
 	case "-h", "--help":
 		about()
-	case "-m", "--managed", "-r", "--release":
+	case "-w", "--wpackagist", "-r", "--release":
 		mrtest(flag)
 	case "-p", "--premium":
 		flag = "-p"
@@ -23,13 +23,13 @@ func main() {
 
 // Determine which function to call based on the passed variable
 func mrtest(flag string) {
-	doublecheck()
+	changedir()
 	if inputs >= 4 {
 		prepare()
 		switch flag {
-		case "-m", "--managed":
-			flag = "-m"
-			managed()
+		case "-w", "--wpackagist":
+			flag = "-w"
+			wpackagist()
 		case "-r", "--release":
 			flag = "-r"
 			released()

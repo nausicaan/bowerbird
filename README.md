@@ -28,7 +28,7 @@ GOOS=linux GOARCH=amd64 go build -o [name] .
 
 ## Run
 
-Navigate to the folder containing your ***composer.json*** file and run:
+Ensure the folder containing your ***composer.json*** file is predefined as variable and run:
 
 ``` console
 [program] [flag] [vendor/plugin]:[version] [ticket#]
@@ -47,7 +47,7 @@ bowerbird -p bcgov-plugin/events-virtual:1.13.4 795
 ### Managed (Plugins currently available via WPackagist or Satis):
 
 ``` console
-bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821
+bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821
 ```
 
 ### Release (In-house Production ready content):
@@ -56,7 +56,7 @@ bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821
 bowerbird -r bcgov-plugin/bcgov-inline-comments:1.9.0 820
 ```
 
-Flags `-r` and `-m` can accept multiple updates, chain together as many as you like!
+Flags `-r` and `-w` can accept multiple updates, chain together as many as you like!
 
 ## License
 

@@ -1,9 +1,9 @@
 package main
 
 // A sequential list of tasks run to complete the program
-func managed() {
+func wpackagist() {
 	tracking("Composer Update")
-	execute("composer", "update")
+	execute("composer", "update", "--no-install")
 	tracking("Plugin Update")
 	sift()
 	tracking("Git Push")
@@ -14,7 +14,7 @@ func managed() {
 func released() {
 	release = solicit("Enter the current release number: ")
 	checkout(relbranch)
-	managed()
+	wpackagist()
 }
 
 // Run the appropriate composer require command based on the flag value
@@ -27,9 +27,9 @@ func require() {
 		}
 	} else {
 		if edge() {
-			execute("composer", "require", plugin, "-W")
+			execute("composer", "require", plugin, "-W", "--no-install")
 		} else {
-			execute("composer", "require", plugin)
+			execute("composer", "require", plugin, "--no-install")
 		}
 	}
 }

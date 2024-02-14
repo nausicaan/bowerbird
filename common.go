@@ -18,26 +18,31 @@ const (
 	relbranch string = "release/"
 	upbranch  string = "update/DESSO-"
 	halt      string = "program halted "
-	zero      string = "Insufficient arguments supplied -"
+	zero      string = "Not enough arguments supplied -"
+	bitbucket string = "/Documents/bitbucket/"
 )
 
 var (
-	event                   Event
-	satis                   Satis
-	flag                    = verify()
-	reader                  = bufio.NewReader(os.Stdin)
-	passed                  = os.Args
-	inputs                  = len(passed)
-	number, folder          []string
-	plugin, ticket, release string
+	event          Event
+	satis          Satis
+	flag           = verify()
+	reader         = bufio.NewReader(os.Stdin)
+	hmdr, _        = os.UserHomeDir()
+	passed         = os.Args
+	inputs         = len(passed)
+	release        string
+	plugin         string
+	ticket         string
+	number, folder []string
 )
 
-func doublecheck() {
+// Confirm the current working directory is correct
+func changedir() {
+	os.Chdir(hmdr + bitbucket + "blog_gov_bc_ca")
 	var filePath string = "composer-prod.json"
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 		alert("This is not the correct folder,")
-		os.Exit(0)
 	}
 }
 
@@ -96,10 +101,10 @@ func verify() string {
 }
 
 // Check to see if the current release branch already exists locally
-func exists(prefix string) bool {
+func exists(prefix, tag string) bool {
 	found := false
 	b, _ := exec.Command("git", "branch").Output()
-	if strings.Contains(string(b), prefix+release) {
+	if strings.Contains(string(b), prefix+tag) {
 		found = true
 	}
 	return found
@@ -116,14 +121,17 @@ func edge() bool {
 
 // Decide whether an update or release branch is needed, and make it so
 func checkout(prefix string) {
+	suffix := ""
 	if flag == "-r" {
-		if exists(prefix) {
-			execute("git", "switch", prefix+release)
-		} else {
-			execute("git", "checkout", "-b", prefix+release)
-		}
+		suffix = release
 	} else {
-		execute("git", "checkout", "-b", prefix+ticket)
+		suffix = ticket
+	}
+
+	if exists(prefix, suffix) {
+		execute("git", "switch", prefix+suffix)
+	} else {
+		execute("git", "checkout", "-b", prefix+suffix)
 	}
 }
 
@@ -148,6 +156,7 @@ func push() {
 // Print a colourized error message
 func alert(message string) {
 	fmt.Println(red, message, halt, reset)
+	os.Exit(0)
 }
 
 // Provide and highlight informational messages
@@ -165,14 +174,13 @@ func about() {
 	fmt.Println(yellow, "\nUsage:", reset)
 	fmt.Println("  [program] [flag] [vendor/plugin]:[version] [ticket#]")
 	fmt.Println(yellow, "\nOptions:")
+	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(green, " -v, --version", reset, "	Display Program Version")
 	fmt.Println(green, " -p, --premium", reset, "	Premium Plugin Repository Update")
 	fmt.Println(green, " -r, --release", reset, "	Production Release Plugin Update")
-	fmt.Println(green, " -m, --managed", reset, "	Satis & WPackagist Plugin Update")
-	fmt.Println(green, " -v, --version", reset, "	Display App Version")
-	fmt.Println(green, " -h, --help", reset, "		Help Information")
+	fmt.Println(green, " -w, --wpackagist", reset, "	Satis & WPackagist Plugin Update")
 	fmt.Println(yellow, "\nExample:", reset)
-	fmt.Println("  Against your composer.json file, run:")
-	fmt.Println(green, "   bowerbird -m wpackagist-plugin/mailpoet:4.6.1 821")
+	fmt.Println(green, "   bowerbird -w wpackagist-plugin/mailpoet:4.6.1 821")
 	fmt.Println(yellow, "\nHelp:", reset)
 	fmt.Println("  For more information go to:")
 	fmt.Println(green, "   https://github.com/nausicaan/bowerbird.git")
