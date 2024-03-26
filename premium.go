@@ -78,6 +78,10 @@ func script() {
 // Convert the structure back into json and overwrite the composer.json file
 func correct() {
 	var updated []byte
+	grep := capture("grep", "least:", "readme.txt")
+	requires := strings.Split(string(grep), " ")
+	event.Require.EventsCalendar = strings.Trim(requires[3], "\n")
+
 	if strings.Contains(event.Name, "event") {
 		updated, _ = json.MarshalIndent(event, "", "    ")
 	} else {

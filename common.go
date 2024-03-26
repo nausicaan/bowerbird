@@ -81,6 +81,14 @@ func execute(task string, args ...string) {
 	inspect(err)
 }
 
+// Run a terminal command, then capture and return the output as a byte
+func capture(task string, args ...string) []byte {
+	lpath, err := exec.LookPath(task)
+	inspect(err)
+	osCmd, _ := exec.Command(lpath, args...).CombinedOutput()
+	return osCmd
+}
+
 // Check for errors, print the result if found
 func inspect(err error) {
 	if err != nil {
